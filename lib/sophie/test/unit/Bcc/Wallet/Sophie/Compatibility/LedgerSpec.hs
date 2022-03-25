@@ -1,0 +1,311 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE NumericUnderscores #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
+module Bcc.Wallet.Sophie.Compatibility.LedgerSpec
+    ( spec
+    ) where
+
+import Prelude
+
+import Bcc.Wallet.Primitive.Types
+    ( MinimumUTxOValue (..) )
+import Bcc.Wallet.Primitive.Types.Coin
+    ( Coin (..) )
+import Bcc.Wallet.Primitive.Types.Coin.Gen
+    ( genCoinFullRange, shrinkCoinFullRange )
+import Bcc.Wallet.Primitive.Types.TokenBundle
+    ( Flat (..), TokenBundle )
+import Bcc.Wallet.Primitive.Types.TokenBundle.Gen
+    ( genFixedSizeTokenBundle
+    , genTokenBundleSmallRange
+    , shrinkTokenBundleSmallRange
+    )
+import Bcc.Wallet.Primitive.Types.TokenPolicy
+    ( TokenName, TokenPolicyId )
+import Bcc.Wallet.Primitive.Types.TokenPolicy.Gen
+    ( genTokenNameLargeRange, genTokenPolicyIdLargeRange )
+import Bcc.Wallet.Primitive.Types.TokenQuantity
+    ( TokenQuantity (..) )
+import Bcc.Wallet.Primitive.Types.TokenQuantity.Gen
+    ( genTokenQuantityFullRange, shrinkTokenQuantityFullRange )
+import Bcc.Wallet.Primitive.Types.Tx
+    ( txOutMaxTokenQuantity, txOutMinTokenQuantity )
+import Bcc.Wallet.Sophie.Compatibility.Ledger
+    ( Convert (..), computeMinimumBccQuantityInternal )
+import Data.Bifunctor
+    ( second )
+import Data.Proxy
+    ( Proxy (..) )
+import Data.Typeable
+    ( Typeable, typeRep )
+import Data.Word
+    ( Word64 )
+import Fmt
+    ( pretty )
+import Test.Hspec
+    ( Spec, describe, it, parallel )
+import Test.Hspec.Core.QuickCheck
+    ( modifyMaxSuccess )
+import Test.QuickCheck
+    ( Arbitrary (..)
+    , Blind (..)
+    , Positive (..)
+    , Property
+    , checkCoverage
+    , conjoin
+    , counterexample
+    , cover
+    , genericShrink
+    , oneof
+    , property
+    , withMaxSuccess
+    , (=/=)
+    , (===)
+    )
+
+import qualified Bcc.Wallet.Primitive.Types.TokenBundle as TokenBundle
+import qualified Data.Set as Set
+
+spec :: Spec
+spec = describe "Bcc.Wallet.Sophie.Compatibility.LedgerSpec" $
+
+    modifyMaxSuccess (const 1000) $ do
+
+    parallel $ describe "Roundtrip conversions" $ do
+
+        ledgerRoundtrip $ Proxy @Coin
+        ledgerRoundtrip $ Proxy @TokenBundle
+        ledgerRoundtrip $ Proxy @TokenName
+        ledgerRoundtrip $ Proxy @TokenPolicyId
+        ledgerRoundtrip $ Proxy @TokenQuantity
+
+    parallel $ describe "Properties for computeMinimumBccQuantity" $ do
+
+        it "prop_computeMinimumBccQuantity_forCoin" $
+            property prop_computeMinimumBccQuantity_forCoin
+        it "prop_computeMinimumBccQuantity_agnosticToBccQuantity" $
+            property prop_computeMinimumBccQuantity_agnosticToBccQuantity
+        it "prop_computeMinimumBccQuantity_agnosticToAssetQuantities" $
+            property prop_computeMinimumBccQuantity_agnosticToAssetQuantities
+
+    parallel $ describe "Unit tests for computeMinimumBccQuantity" $ do
+
+        it "unit_computeMinimumBccQuantity_emptyBundle" $
+            property unit_computeMinimumBccQuantity_emptyBundle
+        it "unit_computeMinimumBccQuantity_fixedSizeBundle_8" $
+            property unit_computeMinimumBccQuantity_fixedSizeBundle_8
+        it "unit_computeMinimumBccQuantity_fixedSizeBundle_64" $
+            property unit_computeMinimumBccQuantity_fixedSizeBundle_64
+        it "unit_computeMinimumBccQuantity_fixedSizeBundle_256" $
+            property unit_computeMinimumBccQuantity_fixedSizeBundle_256
+
+--------------------------------------------------------------------------------
+-- Properties
+--------------------------------------------------------------------------------
+
+prop_computeMinimumBccQuantity_forCoin
+    :: MinimumUTxOValue
+    -> Coin
+    -> Property
+prop_computeMinimumBccQuantity_forCoin minParam c =
+    computeMinimumBccQuantityInternal
+        minParam
+        (TokenBundle.fromCoin c)
+        === expectedMinimumBccQuantity
+  where
+    expectedMinimumBccQuantity = case minParam of
+        MinimumUTxOValue c' -> c'
+        MinimumUTxOValueCostPerWord (Coin x) -> Coin $ x * 29
+
+prop_computeMinimumBccQuantity_agnosticToBccQuantity
+    :: Blind TokenBundle
+    -> MinimumUTxOValue
+    -> Property
+prop_computeMinimumBccQuantity_agnosticToBccQuantity
+    (Blind bundle) minParam =
+        counterexample counterexampleText $ conjoin
+            [ compute bundle === compute bundleWithCoinMinimized
+            , compute bundle === compute bundleWithCoinMaximized
+            , bundleWithCoinMinimized =/= bundleWithCoinMaximized
+            ]
+  where
+    bundleWithCoinMinimized = TokenBundle.setCoin bundle minBound
+    bundleWithCoinMaximized = TokenBundle.setCoin bundle maxBound
+    compute = computeMinimumBccQuantityInternal minParam
+    counterexampleText = unlines
+        [ "bundle:"
+        , pretty (Flat bundle)
+        , "bundle minimized:"
+        , pretty (Flat bundleWithCoinMinimized)
+        , "bundle maximized:"
+        , pretty (Flat bundleWithCoinMaximized)
+        ]
+
+prop_computeMinimumBccQuantity_agnosticToAssetQuantities
+    :: Blind TokenBundle
+    -> MinimumUTxOValue
+    -> Property
+prop_computeMinimumBccQuantity_agnosticToAssetQuantities
+    (Blind bundle) minVal =
+        checkCoverage $
+        cover 40 (assetCount >= 1)
+            "Token bundle has at least 1 non-bcc asset" $
+        cover 20 (assetCount >= 2)
+            "Token bundle has at least 2 non-bcc assets" $
+        cover 10 (assetCount >= 4)
+            "Token bundle has at least 4 non-bcc assets" $
+        counterexample counterexampleText $ conjoin
+            [ compute bundle === compute bundleMinimized
+            , compute bundle === compute bundleMaximized
+            , assetCount === assetCountMinimized
+            , assetCount === assetCountMaximized
+            , if assetCount == 0
+                then bundleMinimized === bundleMaximized
+                else bundleMinimized =/= bundleMaximized
+            ]
+  where
+    assetCount = Set.size $ TokenBundle.getAssets bundle
+    assetCountMinimized = Set.size $ TokenBundle.getAssets bundleMinimized
+    assetCountMaximized = Set.size $ TokenBundle.getAssets bundleMaximized
+    bundleMinimized = bundle `setAllQuantitiesTo` txOutMinTokenQuantity
+    bundleMaximized = bundle `setAllQuantitiesTo` txOutMaxTokenQuantity
+    compute = computeMinimumBccQuantityInternal minVal
+    setAllQuantitiesTo = flip (adjustAllQuantities . const)
+    counterexampleText = unlines
+        [ "bundle:"
+        , pretty (Flat bundle)
+        , "bundle minimized:"
+        , pretty (Flat bundleMinimized)
+        , "bundle maximized:"
+        , pretty (Flat bundleMaximized)
+        ]
+
+--------------------------------------------------------------------------------
+-- Unit tests
+--------------------------------------------------------------------------------
+
+-- | Creates a test to compute the minimum bcc quantity for a token bundle with
+--   a fixed number of assets, where the expected result is a constant.
+--
+-- Policy identifiers, asset names, token quantities are all allowed to vary.
+--
+unit_computeMinimumBccQuantity_fixedSizeBundle
+    :: TokenBundle
+    -- ^ Fixed size bundle
+    -> Coin
+    -- ^ Expected minimum bcc quantity
+    -> Property
+unit_computeMinimumBccQuantity_fixedSizeBundle bundle expectation =
+    withMaxSuccess 100 $
+    computeMinimumBccQuantityInternal (MinimumUTxOValue protocolMinimum) bundle === expectation
+  where
+    protocolMinimum = Coin 1_000_000
+
+unit_computeMinimumBccQuantity_emptyBundle :: Property
+unit_computeMinimumBccQuantity_emptyBundle =
+    unit_computeMinimumBccQuantity_fixedSizeBundle TokenBundle.empty $
+        Coin 1000000
+
+unit_computeMinimumBccQuantity_fixedSizeBundle_8
+    :: Blind (FixedSize8 TokenBundle) -> Property
+unit_computeMinimumBccQuantity_fixedSizeBundle_8 (Blind (FixedSize8 b)) =
+    unit_computeMinimumBccQuantity_fixedSizeBundle b $
+        Coin 3888885
+
+unit_computeMinimumBccQuantity_fixedSizeBundle_64
+    :: Blind (FixedSize64 TokenBundle) -> Property
+unit_computeMinimumBccQuantity_fixedSizeBundle_64 (Blind (FixedSize64 b)) =
+    unit_computeMinimumBccQuantity_fixedSizeBundle b $
+        Coin 22555533
+
+unit_computeMinimumBccQuantity_fixedSizeBundle_256
+    :: Blind (FixedSize256 TokenBundle) -> Property
+unit_computeMinimumBccQuantity_fixedSizeBundle_256 (Blind (FixedSize256 b)) =
+    unit_computeMinimumBccQuantity_fixedSizeBundle b $
+        Coin 86555469
+
+--------------------------------------------------------------------------------
+-- Utilities
+--------------------------------------------------------------------------------
+
+adjustAllQuantities
+    :: (TokenQuantity -> TokenQuantity) -> TokenBundle -> TokenBundle
+adjustAllQuantities adjust b = uncurry TokenBundle.fromFlatList $ second
+    (fmap (fmap adjust))
+    (TokenBundle.toFlatList b)
+
+ledgerRoundtrip
+    :: forall w l. (Arbitrary w, Eq w, Show w, Typeable w, Convert w l)
+    => Proxy w
+    -> Spec
+ledgerRoundtrip proxy = it title $
+    property $ \a -> toWallet (toLedger @w a) === a
+  where
+    title = mconcat
+        [ "Can perform roundtrip conversion for values of type '"
+        , show (typeRep proxy)
+        , "'"
+        ]
+
+--------------------------------------------------------------------------------
+-- Bccptors
+--------------------------------------------------------------------------------
+
+newtype FixedSize8 a = FixedSize8 { unFixedSize8 :: a }
+    deriving (Eq, Show)
+
+newtype FixedSize64 a = FixedSize64 { unFixedSize64 :: a }
+    deriving (Eq, Show)
+
+newtype FixedSize256 a = FixedSize256 { unFixedSize256 :: a }
+    deriving (Eq, Show)
+
+--------------------------------------------------------------------------------
+-- Arbitraries
+--------------------------------------------------------------------------------
+
+instance Arbitrary Coin where
+    -- This instance is used to test roundtrip conversions, so it's important
+    -- that we generate coins across the full range available.
+    arbitrary = genCoinFullRange
+    shrink = shrinkCoinFullRange
+
+instance Arbitrary MinimumUTxOValue where
+    arbitrary = oneof
+        [ MinimumUTxOValue . Coin . (* 1_000_000) <$> genSmallWord
+        , MinimumUTxOValueCostPerWord . Coin <$> genSmallWord
+        ]
+      where
+      genSmallWord = fromIntegral @Int @Word64 . getPositive <$> arbitrary
+    shrink = genericShrink
+
+instance Arbitrary TokenBundle where
+    arbitrary = genTokenBundleSmallRange
+    shrink = shrinkTokenBundleSmallRange
+
+instance Arbitrary (FixedSize8 TokenBundle) where
+    arbitrary = FixedSize8 <$> genFixedSizeTokenBundle 8
+    -- No shrinking
+
+instance Arbitrary (FixedSize64 TokenBundle) where
+    arbitrary = FixedSize64 <$> genFixedSizeTokenBundle 64
+    -- No shrinking
+
+instance Arbitrary (FixedSize256 TokenBundle) where
+    arbitrary = FixedSize256 <$> genFixedSizeTokenBundle 256
+    -- No shrinking
+
+instance Arbitrary TokenName where
+    arbitrary = genTokenNameLargeRange
+    -- No shrinking
+
+instance Arbitrary TokenPolicyId where
+    arbitrary = genTokenPolicyIdLargeRange
+    -- No shrinking
+
+instance Arbitrary TokenQuantity where
+    arbitrary = genTokenQuantityFullRange
+    shrink = shrinkTokenQuantityFullRange

@@ -1,0 +1,105 @@
+{
+    "seed": -6351298664987287460,
+    "samples": [
+        {
+            "total": {
+                "quantity": 137,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 142,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 159,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 168,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 73,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 71,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 154,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 23,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 22,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 189,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 229,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 61,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 45,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 103,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 106,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 177,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 174,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 207,
+                "unit": "entropic"
+            }
+        },
+        {
+            "total": {
+                "quantity": 177,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 90,
+                "unit": "entropic"
+            }
+        }
+    ]
+}

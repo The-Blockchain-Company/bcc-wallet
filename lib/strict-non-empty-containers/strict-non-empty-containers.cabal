@@ -1,0 +1,73 @@
+name:                strict-non-empty-containers
+version:             2020.12.8
+synopsis:            Strict non-empty container types
+homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
+author:              IOHK Engineering Team
+maintainer:          operations@tbco.io
+copyright:           2021-2022 TBCO
+license:             Apache-2.0
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+
+flag release
+    description: Enable optimization and `-Werror`
+    default: False
+    manual: True
+
+library
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -Wall
+      -Wcompat
+      -fwarn-redundant-constraints
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , containers
+    , deepseq
+    , hashable
+  hs-source-dirs:
+      src
+  exposed-modules:
+      Data.Map.Strict.NonEmptyMap
+      Data.Map.Strict.NonEmptyMap.Internal
+      Data.Set.Strict.NonEmptySet
+
+test-suite unit
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , bcc-wallet-test-utils
+    , containers
+    , hspec
+    , hspec-core
+    , QuickCheck
+    , quickcheck-classes
+    , should-not-typecheck
+    , strict-non-empty-containers
+  build-tools:
+      hspec-discover
+  type:
+     exitcode-stdio-1.0
+  hs-source-dirs:
+      test/unit
+  main-is:
+      Main.hs
+  other-modules:
+      Data.Map.Strict.NonEmptyMapSpec
+      Data.Map.Strict.NonEmptyMap.TypeErrorSpec

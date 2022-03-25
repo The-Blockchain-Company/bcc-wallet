@@ -1,0 +1,369 @@
+name:                bcc-wallet
+version:             2021.9.29
+synopsis:            Wallet backend protocol-specific bits implemented using Sophie nodes
+description:         Please see README.md
+homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
+author:              IOHK Engineering Team
+maintainer:          operations@tbco.io
+copyright:           2020 IOHK
+license:             Apache-2.0
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+
+flag release
+    description: Enable optimization and `-Werror`
+    default: False
+    manual: True
+
+library
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -Wall
+      -Wcompat
+      -fwarn-redundant-constraints
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , aeson
+    , base58-bytestring
+    , bech32
+    , bech32-th
+    , binary
+    , bytestring
+    , bcc-addresses
+    , bcc-api
+    , bcc-binary
+    , bcc-crypto
+    , bcc-crypto-class
+    , bcc-crypto-wrapper
+    , bcc-wallet-launcher
+    , bcc-ledger-cole
+    , bcc-ledger-core
+    , bcc-ledger-sophie-ma
+    , bcc-ledger-aurum
+    , bcc-slotting
+    , bcc-wallet-cli
+    , bcc-wallet-core
+    , bcc-wallet-launcher
+    , bcc-wallet-test-utils
+    , cborg
+    , containers
+    , contra-tracer
+    , directory
+    , extra
+    , filepath
+    , fmt
+    , generic-lens
+    , io-classes
+    , tbco-monitoring
+    , memory
+    , network
+    , network-mux
+    , network-uri
+    , optparse-applicative
+    , shardagnostic-consensus
+    , shardagnostic-consensus-cole
+    , shardagnostic-consensus-bcc
+    , shardagnostic-consensus-sophie
+    , shardagnostic-network
+    , shardagnostic-network-framework
+    , random
+    , retry
+    , servant-server
+    , sophie-spec-ledger
+    , strict-containers
+    , strict-non-empty-containers
+    , temporary
+    , text
+    , text-class
+    , time
+    , transformers
+    , typed-process
+    , unliftio
+    , unliftio-core
+    , unordered-containers
+    , vector
+    , warp
+    , yaml
+    , Win32-network
+  hs-source-dirs:
+      src
+  exposed-modules:
+      Bcc.Wallet.Cole.Compatibility
+      Bcc.Wallet.Sophie
+      Bcc.Wallet.Sophie.Api.Server
+      Bcc.Wallet.Sophie.Compatibility
+      Bcc.Wallet.Sophie.Compatibility.Ledger
+      Bcc.Wallet.Sophie.Network
+      Bcc.Wallet.Sophie.Transaction
+      Bcc.Wallet.Sophie.Launch
+      Bcc.Wallet.Sophie.Launch.Cluster
+      Bcc.Wallet.Sophie.Pools
+
+executable bcc-wallet
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , bcc-wallet-cli
+    , bcc-wallet-core
+    , bcc-wallet-launcher
+    , bcc-wallet
+    , contra-tracer
+    , tbco-monitoring
+    , lobemo-backend-ekg
+    , network-uri
+    , optparse-applicative
+    , text
+    , text-class
+    , transformers
+    , unliftio
+  hs-source-dirs:
+      exe
+  main-is:
+    bcc-wallet.hs
+
+executable local-cluster
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , bcc-wallet-cli
+    , bcc-wallet-core
+    , bcc-wallet-core-integration
+    , bcc-wallet-launcher
+    , bcc-wallet
+    , contra-tracer
+    , tbco-monitoring
+    , directory
+    , filepath
+    , lobemo-backend-ekg
+    , text
+    , text-class
+  hs-source-dirs:
+      exe
+  main-is:
+      local-cluster.hs
+
+executable mock-token-metadata-server
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , ansi-wl-pprint
+    , bcc-wallet-core
+    , optparse-applicative
+    , wai-extra
+  hs-source-dirs:
+      exe
+  main-is:
+     mock-token-metadata-server.hs
+
+test-suite unit
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , aeson
+    , base58-bytestring
+    , bech32
+    , bech32-th
+    , bytestring
+    , bcc-addresses
+    , bcc-api
+    , bcc-crypto-class
+    , bcc-ledger-core
+    , bcc-wallet
+    , bcc-wallet-core
+    , bcc-wallet-launcher
+    , bcc-wallet-test-utils
+    , containers
+    , contra-tracer
+    , filepath
+    , fmt
+    , generic-lens
+    , hspec-core
+    , tbco-monitoring
+    , hspec
+    , hspec-core
+    , memory
+    , optparse-applicative
+    , shardagnostic-consensus-sophie
+    , shardagnostic-network
+    , sophie-spec-ledger
+    , text
+    , text-class
+    , transformers
+    , unliftio
+    , QuickCheck
+  build-tools:
+      hspec-discover
+  type:
+     exitcode-stdio-1.0
+  hs-source-dirs:
+      test/unit
+  main-is:
+      Main.hs
+  other-modules:
+      Bcc.Wallet.Sophie.CompatibilitySpec
+      Bcc.Wallet.Sophie.Compatibility.LedgerSpec
+      Bcc.Wallet.Sophie.LaunchSpec
+      Bcc.Wallet.Sophie.NetworkSpec
+      Bcc.Wallet.Sophie.TransactionSpec
+      Spec
+
+test-suite integration
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , bcc-wallet-cli
+    , bcc-wallet-core
+    , bcc-wallet-core-integration
+    , bcc-wallet-launcher
+    , bcc-wallet
+    , bcc-wallet-test-utils
+    , contra-tracer
+    , directory
+    , either
+    , filepath
+    , hspec
+    , hspec-core
+    , http-client
+    , tbco-monitoring
+    , lobemo-backend-ekg
+    , network-uri
+    , text
+    , text-class
+    , unliftio
+  build-tools:
+      bcc-wallet
+  type:
+     exitcode-stdio-1.0
+  hs-source-dirs:
+      test/integration
+  main-is:
+      Main.hs
+  other-modules:
+      Bcc.Wallet.Sophie.Faucet
+
+benchmark restore
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , aeson
+    , bytestring
+    , bcc-addresses
+    , bcc-wallet-core
+    , bcc-wallet-core-integration
+    , bcc-wallet
+    , contra-tracer
+    , deepseq
+    , filepath
+    , fmt
+    , tbco-monitoring
+    , say
+    , text
+    , text-class
+    , time
+    , transformers
+    , unliftio
+  type:
+     exitcode-stdio-1.0
+  hs-source-dirs:
+      bench
+  main-is:
+      Restore.hs
+
+benchmark latency
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , aeson
+    , bcc-wallet-cli
+    , bcc-wallet-core
+    , bcc-wallet-core-integration
+    , bcc-wallet
+    , bcc-wallet-launcher
+    , directory
+    , filepath
+    , generic-lens
+    , http-client
+    , http-types
+    , hspec
+    , tbco-monitoring
+    , text
+    , unliftio
+  type:
+     exitcode-stdio-1.0
+  hs-source-dirs:
+      bench
+      test/integration
+  main-is:
+      Latency.hs
+  other-modules:
+      Bcc.Wallet.Sophie.Faucet

@@ -1,0 +1,39 @@
+{
+    "seed": 3826889656997292020,
+    "samples": [
+        [],
+        [],
+        [],
+        [],
+        [
+            {
+                "asset_name": "546f6b656e5f41",
+                "quantity": 7,
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+        ],
+        [],
+        [],
+        [
+            {
+                "asset_name": "546f6b656e5f43",
+                "quantity": 3,
+                "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+        ],
+        [
+            {
+                "asset_name": "546f6b656e5f41",
+                "quantity": 5,
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+        ],
+        [
+            {
+                "asset_name": "546f6b656e5f42",
+                "quantity": 8,
+                "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+        ]
+    ]
+}

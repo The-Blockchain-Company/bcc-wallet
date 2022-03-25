@@ -1,0 +1,195 @@
+{
+    "seed": 1534183186405643902,
+    "samples": [
+        {
+            "sophie": null,
+            "jen": {
+                "epoch_start_time": "1892-10-07T13:08:31Z",
+                "epoch_number": 7128
+            },
+            "cole": {
+                "epoch_start_time": "1898-06-09T23:55:30.408236401238Z",
+                "epoch_number": 26008
+            },
+            "evie": {
+                "epoch_start_time": "1870-06-12T07:46:56Z",
+                "epoch_number": 6583
+            },
+            "aurum": {
+                "epoch_start_time": "1895-02-12T11:00:00Z",
+                "epoch_number": 6134
+            }
+        },
+        {
+            "sophie": null,
+            "jen": {
+                "epoch_start_time": "1885-10-20T12:52:48.440317848248Z",
+                "epoch_number": 1558
+            },
+            "cole": {
+                "epoch_start_time": "1871-04-22T17:00:00Z",
+                "epoch_number": 20911
+            },
+            "evie": {
+                "epoch_start_time": "1867-03-14T05:00:00Z",
+                "epoch_number": 18559
+            },
+            "aurum": {
+                "epoch_start_time": "1900-02-03T21:12:48.812101740834Z",
+                "epoch_number": 20568
+            }
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1868-06-02T07:20:19Z",
+                "epoch_number": 20238
+            },
+            "jen": {
+                "epoch_start_time": "1906-10-17T14:00:00Z",
+                "epoch_number": 9082
+            },
+            "cole": {
+                "epoch_start_time": "1877-10-13T19:33:12Z",
+                "epoch_number": 207
+            },
+            "evie": {
+                "epoch_start_time": "1872-01-15T23:56:06Z",
+                "epoch_number": 22381
+            },
+            "aurum": null
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1864-12-21T12:00:00Z",
+                "epoch_number": 27686
+            },
+            "jen": {
+                "epoch_start_time": "1902-08-28T22:24:11Z",
+                "epoch_number": 16041
+            },
+            "cole": {
+                "epoch_start_time": "1889-06-05T01:15:44Z",
+                "epoch_number": 22433
+            },
+            "evie": {
+                "epoch_start_time": "1868-05-16T15:49:55Z",
+                "epoch_number": 4967
+            },
+            "aurum": {
+                "epoch_start_time": "1908-02-28T13:05:00.046732617738Z",
+                "epoch_number": 16274
+            }
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1883-10-16T22:07:21Z",
+                "epoch_number": 12754
+            },
+            "jen": {
+                "epoch_start_time": "1866-01-25T13:14:42.86743810784Z",
+                "epoch_number": 22843
+            },
+            "cole": null,
+            "evie": {
+                "epoch_start_time": "1887-08-30T16:50:00Z",
+                "epoch_number": 23447
+            },
+            "aurum": null
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1875-02-26T09:23:32Z",
+                "epoch_number": 21298
+            },
+            "jen": {
+                "epoch_start_time": "1892-11-14T00:31:49.367340625634Z",
+                "epoch_number": 11677
+            },
+            "cole": {
+                "epoch_start_time": "1887-06-06T17:54:16.814662441679Z",
+                "epoch_number": 19475
+            },
+            "evie": {
+                "epoch_start_time": "1903-09-19T06:00:00Z",
+                "epoch_number": 2001
+            },
+            "aurum": {
+                "epoch_start_time": "1896-08-15T14:22:54Z",
+                "epoch_number": 17492
+            }
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1890-03-08T00:03:29.798306941422Z",
+                "epoch_number": 23050
+            },
+            "jen": {
+                "epoch_start_time": "1866-05-27T03:48:23Z",
+                "epoch_number": 10262
+            },
+            "cole": {
+                "epoch_start_time": "1876-08-18T05:01:40Z",
+                "epoch_number": 17398
+            },
+            "evie": {
+                "epoch_start_time": "1906-04-02T00:00:00Z",
+                "epoch_number": 28178
+            },
+            "aurum": {
+                "epoch_start_time": "1863-05-28T22:33:55Z",
+                "epoch_number": 28407
+            }
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1866-03-24T14:00:00Z",
+                "epoch_number": 10126
+            },
+            "jen": null,
+            "cole": {
+                "epoch_start_time": "1869-11-23T13:50:25Z",
+                "epoch_number": 27122
+            },
+            "evie": {
+                "epoch_start_time": "1897-05-23T12:15:17.96756455082Z",
+                "epoch_number": 8140
+            },
+            "aurum": null
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1884-12-07T23:10:44Z",
+                "epoch_number": 840
+            },
+            "jen": null,
+            "cole": {
+                "epoch_start_time": "1906-04-15T10:00:00Z",
+                "epoch_number": 9804
+            },
+            "evie": null,
+            "aurum": {
+                "epoch_start_time": "1858-12-01T19:29:14.836422646093Z",
+                "epoch_number": 10536
+            }
+        },
+        {
+            "sophie": {
+                "epoch_start_time": "1899-07-31T11:00:00Z",
+                "epoch_number": 10257
+            },
+            "jen": {
+                "epoch_start_time": "1865-11-09T03:00:00Z",
+                "epoch_number": 4717
+            },
+            "cole": null,
+            "evie": {
+                "epoch_start_time": "1886-06-10T05:00:00Z",
+                "epoch_number": 1505
+            },
+            "aurum": {
+                "epoch_start_time": "1895-04-21T13:05:33.069090574843Z",
+                "epoch_number": 3586
+            }
+        }
+    ]
+}

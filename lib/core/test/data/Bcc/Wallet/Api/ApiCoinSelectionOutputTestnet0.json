@@ -1,0 +1,190 @@
+{
+    "seed": 2192231040354762787,
+    "samples": [
+        {
+            "amount": {
+                "quantity": 98,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 225,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 4,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": [
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 10,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 4,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                }
+            ]
+        },
+        {
+            "amount": {
+                "quantity": 128,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 249,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": [
+                {
+                    "asset_name": "546f6b656e42",
+                    "quantity": 2,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                }
+            ]
+        },
+        {
+            "amount": {
+                "quantity": 57,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 34,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": [
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 6,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 10,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 7,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e42",
+                    "quantity": 9,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 11,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 5,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 8,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 3,
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                },
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 5,
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 14,
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                }
+            ]
+        },
+        {
+            "amount": {
+                "quantity": 3,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": [
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 5,
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                }
+            ]
+        },
+        {
+            "amount": {
+                "quantity": 216,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 194,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "assets": [
+                {
+                    "asset_name": "546f6b656e42",
+                    "quantity": 4,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 11,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 6,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 6,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e42",
+                    "quantity": 2,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 8,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                }
+            ]
+        }
+    ]
+}

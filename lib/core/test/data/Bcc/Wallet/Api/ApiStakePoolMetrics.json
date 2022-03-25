@@ -1,0 +1,155 @@
+{
+    "seed": 4290201172570848777,
+    "samples": [
+        {
+            "saturation": 0.10751614481989469,
+            "non_myopic_member_rewards": {
+                "quantity": 152166704544,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 4805481,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 44.16,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 3.4310496884085753,
+            "non_myopic_member_rewards": {
+                "quantity": 188764404030,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 15633324,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 1.9,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 4.243705057888601,
+            "non_myopic_member_rewards": {
+                "quantity": 395723120014,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 4721387,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 27,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 2.043344706638611,
+            "non_myopic_member_rewards": {
+                "quantity": 783184264297,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 22592059,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 9.26,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 4.272294780206066,
+            "non_myopic_member_rewards": {
+                "quantity": 655416953793,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 11965030,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 15.22,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 3.4320540590575965,
+            "non_myopic_member_rewards": {
+                "quantity": 946139789543,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 20598819,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 53.47,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 3.612078927784514,
+            "non_myopic_member_rewards": {
+                "quantity": 922004030335,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 13948002,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 20.32,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 1.8369126690876247,
+            "non_myopic_member_rewards": {
+                "quantity": 741760214377,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 8208651,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 38.08,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 0.8068271487118317,
+            "non_myopic_member_rewards": {
+                "quantity": 218944845310,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 5009789,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 38.84,
+                "unit": "percent"
+            }
+        },
+        {
+            "saturation": 0.6898508393623815,
+            "non_myopic_member_rewards": {
+                "quantity": 963600219927,
+                "unit": "entropic"
+            },
+            "produced_blocks": {
+                "quantity": 21950838,
+                "unit": "block"
+            },
+            "relative_stake": {
+                "quantity": 33.63,
+                "unit": "percent"
+            }
+        }
+    ]
+}

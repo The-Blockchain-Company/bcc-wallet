@@ -1,0 +1,761 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE NumericUnderscores #-}
+{-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE UndecidableInstances #-}
+
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
+module Bcc.Wallet.DB.Arbitrary
+    ( GenTxHistory (..)
+    , KeyValPairs (..)
+    , GenState
+    , MockChain (..)
+    , InitialCheckpoint (..)
+    ) where
+
+import Prelude
+
+import Bcc.Address.Derivation
+    ( XPrv, XPub )
+import Bcc.Address.Script
+    ( Cosigner (..), Script (..), ScriptTemplate (..) )
+import Bcc.Crypto.Wallet
+    ( unXPrv )
+import Bcc.Mnemonic
+    ( SomeMnemonic (..) )
+import Bcc.Wallet.DB.Model
+    ( TxHistory, filterTxHistory )
+import Bcc.Wallet.DummyTarget.Primitive.Types as DummyTarget
+    ( block0, mkTx )
+import Bcc.Wallet.Gen
+    ( genMnemonic, genSimpleTxMetadata, shrinkSlotNo, shrinkTxMetadata )
+import Bcc.Wallet.Primitive.AddressDerivation
+    ( Depth (..)
+    , DerivationType (..)
+    , Index (..)
+    , NetworkDiscriminant (..)
+    , Passphrase (..)
+    , Role (..)
+    , WalletKey (..)
+    , publicKey
+    )
+import Bcc.Wallet.Primitive.AddressDerivation.Cole
+    ( ColeKey (..) )
+import Bcc.Wallet.Primitive.AddressDerivation.Shared
+    ()
+import Bcc.Wallet.Primitive.AddressDerivation.SharedKey
+    ( SharedKey, purposeCIP1854 )
+import Bcc.Wallet.Primitive.AddressDerivation.Sophie
+    ( SophieKey (..) )
+import Bcc.Wallet.Primitive.AddressDiscovery
+    ( IsOurs )
+import Bcc.Wallet.Primitive.AddressDiscovery.Random
+    ( RndState (..) )
+import Bcc.Wallet.Primitive.AddressDiscovery.Sequential
+    ( AddressPool
+    , DerivationPrefix (..)
+    , ParentContext (..)
+    , SeqState (..)
+    , coinTypeBcc
+    , defaultAddressPoolGap
+    , mkAddressPool
+    , purposeCIP1852
+    )
+import Bcc.Wallet.Primitive.AddressDiscovery.Shared
+    ( SharedState (..), SharedStateFields (..) )
+import Bcc.Wallet.Primitive.Model
+    ( Wallet, currentTip, getState, unsafeInitWallet, utxo )
+import Bcc.Wallet.Primitive.Types
+    ( Block (..)
+    , BlockHeader (..)
+    , DecentralizationLevel (..)
+    , DelegationCertificate (..)
+    , EpochNo (..)
+    , EraInfo (..)
+    , ExecutionUnitPrices (..)
+    , FeePolicy (..)
+    , MinimumUTxOValue (..)
+    , PassphraseScheme (..)
+    , PoolId (..)
+    , ProtocolParameters (..)
+    , Range (..)
+    , SlotInEpoch (..)
+    , SlotNo (..)
+    , SortOrder (..)
+    , TxParameters (..)
+    , WalletDelegation (..)
+    , WalletDelegationStatus (..)
+    , WalletId (..)
+    , WalletMetadata (..)
+    , WalletName (..)
+    , WalletPassphraseInfo (..)
+    , rangeIsValid
+    , unsafeEpochNo
+    , wholeRange
+    )
+import Bcc.Wallet.Primitive.Types.Address
+    ( Address (..), AddressState (..) )
+import Bcc.Wallet.Primitive.Types.Coin
+    ( Coin (..) )
+import Bcc.Wallet.Primitive.Types.Coin.Gen
+    ( genCoinFullRange )
+import Bcc.Wallet.Primitive.Types.Hash
+    ( Hash (..), mockHash )
+import Bcc.Wallet.Primitive.Types.RewardAccount
+    ( RewardAccount (..) )
+import Bcc.Wallet.Primitive.Types.TokenBundle.Gen
+    ( genTokenBundleSmallRange )
+import Bcc.Wallet.Primitive.Types.Tx
+    ( Direction (..)
+    , Tx (..)
+    , TxIn (..)
+    , TxMeta (..)
+    , TxMetadata
+    , TxOut (..)
+    , TxScriptValidity (..)
+    , TxStatus (..)
+    , isPending
+    )
+import Bcc.Wallet.Primitive.Types.Tx.Gen
+    ( genTxScriptValidity, shrinkTxScriptValidity )
+import Bcc.Wallet.Primitive.Types.UTxO
+    ( UTxO (..) )
+import Bcc.Wallet.Unsafe
+    ( someDummyMnemonic, unsafeMkPercentage )
+import Bcc.Wallet.Util
+    ( ShowFmt (..) )
+import Control.Arrow
+    ( second )
+import Control.DeepSeq
+    ( NFData )
+import Crypto.Hash
+    ( hash )
+import Data.ByteArray.Encoding
+    ( Base (Base16), convertToBase )
+import Data.Coerce
+    ( coerce )
+import Data.Functor.Identity
+    ( Identity (..) )
+import Data.Generics.Internal.VL.Lens
+    ( view, (^.) )
+import Data.Generics.Labels
+    ()
+import Data.List
+    ( unfoldr )
+import Data.Proxy
+    ( Proxy (..) )
+import Data.Quantity
+    ( Percentage (..), Quantity (..) )
+import Data.Ratio
+    ( (%) )
+import Data.Text.Class
+    ( toText )
+import Data.Word
+    ( Word32 )
+import Data.Word.Odd
+    ( Word31 )
+import Fmt
+    ( Buildable (..), Builder, blockListF', prefixF, suffixF, tupleF )
+import GHC.Generics
+    ( Generic )
+import System.IO.Unsafe
+    ( unsafePerformIO )
+import System.Random
+    ( mkStdGen )
+import Test.QuickCheck
+    ( Arbitrary (..)
+    , Gen
+    , InfiniteList (..)
+    , NonEmptyList (..)
+    , arbitraryBoundedEnum
+    , arbitrarySizedBoundedIntegral
+    , choose
+    , elements
+    , frequency
+    , generate
+    , genericShrink
+    , liftArbitrary
+    , oneof
+    , scale
+    , shrinkIntegral
+    , shrinkList
+    , vector
+    , vectorOf
+    )
+import Test.QuickCheck.Arbitrary.Generic
+    ( genericArbitrary )
+import Test.Utils.Time
+    ( genUniformTime )
+
+import qualified Bcc.Wallet.Primitive.AddressDerivation.Cole as Cole
+import qualified Bcc.Wallet.Primitive.AddressDerivation.Shared as Shared
+import qualified Bcc.Wallet.Primitive.AddressDerivation.Sophie as Sophie
+import qualified Bcc.Wallet.Primitive.AddressDiscovery.Sequential as Seq
+import qualified Data.ByteArray as BA
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as B8
+import qualified Data.List as L
+import qualified Data.Map.Strict as Map
+
+{-------------------------------------------------------------------------------
+                                 Modifiers
+-------------------------------------------------------------------------------}
+
+type GenState s =
+    ( Arbitrary s
+    , Buildable s
+    , IsOurs s Address
+    , IsOurs s RewardAccount
+    , NFData s
+    , Show s
+    )
+
+newtype KeyValPairs k v = KeyValPairs [(k, v)]
+    deriving (Generic, Show, Eq)
+
+newtype GenTxHistory = GenTxHistory { unGenTxHistory :: TxHistory }
+    deriving stock (Show, Eq)
+    deriving newtype (Semigroup, Monoid)
+
+newtype MockChain = MockChain
+    { getMockChain :: [Block] }
+    deriving stock (Eq, Show)
+
+-- | Generate arbitrary checkpoints, but that always have their tip at 0 0.
+newtype InitialCheckpoint s =
+    InitialCheckpoint { getInitialCheckpoint :: Wallet s }
+    deriving newtype (Show, Eq, Buildable, NFData)
+
+instance (Arbitrary k, Ord k, Arbitrary v) => Arbitrary (KeyValPairs k v) where
+    shrink = genericShrink
+    arbitrary = do
+        pairs <- choose (1, 10) >>= vector
+        pure $ KeyValPairs $ L.sortOn fst pairs
+
+-- | For checkpoints, we make sure to generate them in order.
+instance {-# OVERLAPS #-} (Arbitrary k, Ord k, GenState s)
+    => Arbitrary (KeyValPairs k (ShowFmt (Wallet s))) where
+    shrink = genericShrink
+    arbitrary = do
+        pairs <- choose (1, 10) >>= vector
+        pure $ KeyValPairs $ second ShowFmt
+           <$> L.sortOn (\(k,cp) -> (k, view #slotNo (currentTip cp))) pairs
+
+instance Arbitrary GenTxHistory where
+    shrink (GenTxHistory txs) = GenTxHistory <$> shrinkList shrinkOne txs
+      where
+        shrinkOne (tx,meta) = [(tx', meta) | tx' <- shrink tx]
+
+    arbitrary = GenTxHistory . sortTxHistory <$> do
+        -- NOTE
+        -- We discard pending transaction from any 'GenTxHistory since,
+        -- inserting a pending transaction actually has an effect on the
+        -- checkpoint's pending transactions of the same wallet.
+        filter (not . isPending . snd) <$> scale (min 25) arbitrary
+      where
+        sortTxHistory = filterTxHistory Nothing Descending wholeRange
+
+instance Arbitrary MockChain where
+    shrink (MockChain chain) =
+        [ MockChain chain'
+        | chain' <- shrinkList shrinkBlock chain
+        , not (null chain')
+        ]
+      where
+        shrinkBlock (Block h txs _) =
+            Block h <$> shrinkList shrink txs <*> pure []
+    arbitrary = do
+        n0 <- choose (1, 10)
+        slot0 <- arbitrary
+        height0 <- fromIntegral <$> choose (0, unSlotNo slot0)
+        blocks <- sequence $ flip unfoldr (slot0, height0, n0) $
+            \(slot, height, n) ->
+                if n <= (0 :: Int)
+                    then Nothing
+                    else Just
+                        ( genBlock slot height
+                        , (SlotNo (unSlotNo slot + 1), height + 1, n - 1)
+                        )
+        return (MockChain blocks)
+      where
+        genBlock :: SlotNo -> Word32 -> Gen Block
+        genBlock slot height = do
+            let h = BlockHeader
+                    slot
+                    (Quantity height)
+                    (mockHash slot)
+                    (mockHash slot)
+            Block h
+                <$> (choose (1, 10) >>= vector)
+                <*> pure []
+
+instance GenState s => Arbitrary (InitialCheckpoint s) where
+    shrink (InitialCheckpoint cp) = InitialCheckpoint <$> shrink cp
+    arbitrary = do
+        cp <- arbitrary @(Wallet s)
+        pure $ InitialCheckpoint $ unsafeInitWallet
+            (utxo cp)
+            (block0 ^. #header)
+            (getState cp)
+
+{-------------------------------------------------------------------------------
+                                   Wallets
+-------------------------------------------------------------------------------}
+
+instance GenState s => Arbitrary (Wallet s) where
+    shrink w =
+        [ unsafeInitWallet u (currentTip w) s
+        | (u, s) <- shrink (utxo w, getState w) ]
+    arbitrary = unsafeInitWallet
+        <$> arbitrary
+        <*> arbitrary
+        <*> arbitrary
+
+instance Arbitrary WalletId where
+    shrink _ = []
+    arbitrary = WalletId . hash . B8.pack . pure <$> elements ['a'..'k']
+
+instance Arbitrary WalletMetadata where
+    shrink _ = []
+    arbitrary =  WalletMetadata
+        <$> (WalletName <$> elements ["bulbazaur", "charmander", "squirtle"])
+        <*> genUniformTime
+        <*> oneof
+            [ pure Nothing
+            , Just <$> (WalletPassphraseInfo <$> genUniformTime <*> arbitrary)
+            ]
+        <*> pure (WalletDelegation NotDelegating [])
+
+instance Arbitrary PassphraseScheme where
+    arbitrary = genericArbitrary
+
+{-------------------------------------------------------------------------------
+                                   Blocks
+-------------------------------------------------------------------------------}
+
+instance Arbitrary BlockHeader where
+    arbitrary = do
+        EpochNo ep <- arbitrary
+        SlotInEpoch sl <- arbitrary
+        let h = fromIntegral sl + fromIntegral ep * arbitraryEpochLength
+        blockH <- arbitrary
+        let slot = SlotNo $ fromIntegral h
+        pure $ BlockHeader slot (Quantity h) blockH (coerce blockH)
+
+instance Arbitrary SlotNo where
+    arbitrary = do
+        SlotInEpoch sl <- arbitrary
+        EpochNo ep <- arbitrary
+        pure $ SlotNo $ fromIntegral $ fromIntegral ep * arbitraryChainLength + sl
+    shrink = shrinkSlotNo
+
+instance Arbitrary SlotInEpoch where
+    shrink (SlotInEpoch x) = SlotInEpoch <$> shrink x
+    arbitrary = SlotInEpoch <$> choose (0, fromIntegral arbitraryChainLength)
+
+instance Arbitrary EpochNo where
+    shrink (EpochNo x) = EpochNo <$> shrink x
+    arbitrary = unsafeEpochNo <$> choose (0, arbitraryEpochLength)
+
+arbitraryEpochLength :: Word32
+arbitraryEpochLength = 100
+
+arbitraryChainLength :: Word32
+arbitraryChainLength = 10
+
+{-------------------------------------------------------------------------------
+                                  Transactions
+-------------------------------------------------------------------------------}
+
+instance Arbitrary Tx where
+    shrink (Tx _tid fees ins cins outs wdrls md validity) =
+        [ mkTx fees ins' cins' outs' wdrls' md' validity'
+        | (ins', cins', outs', wdrls', md', validity') <-
+            shrink (ins, cins, outs, wdrls, md, validity)
+        ]
+
+    arbitrary = do
+        ins <- fmap (L.nub . L.take 5 . getNonEmpty) arbitrary
+        cins <- fmap (L.nub . L.take 5 . getNonEmpty) arbitrary
+        outs <- fmap (L.take 5 . getNonEmpty) arbitrary
+        wdrls <- fmap (Map.fromList . L.take 5) arbitrary
+        fees <- arbitrary
+        mkTx fees ins cins outs wdrls
+            <$> arbitrary <*> liftArbitrary genTxScriptValidity
+
+instance Arbitrary TxIn where
+    arbitrary = TxIn
+        <$> arbitrary
+        <*> scale (`mod` 3) arbitrary -- No need for a high indexes
+
+instance Arbitrary TxOut where
+    arbitrary = TxOut
+        <$> arbitrary
+        <*> genTokenBundleSmallRange
+
+instance Arbitrary TxMeta where
+    arbitrary = do
+        st <- arbitrary
+        TxMeta st
+            <$> elements [Incoming, Outgoing]
+            <*> arbitrary
+            <*> fmap Quantity arbitrary
+            <*> arbitrary
+            <*> (if st == Pending then Just <$> arbitrary else pure Nothing)
+
+instance Arbitrary TxStatus where
+    arbitrary = elements [Pending, InLedger]
+
+instance Arbitrary TxMetadata where
+    arbitrary = genSimpleTxMetadata
+    shrink = shrinkTxMetadata
+
+instance Arbitrary Coin where
+    arbitrary = genCoinFullRange
+
+instance Arbitrary UTxO where
+    shrink (UTxO u) =
+        UTxO <$> shrink u
+    arbitrary = do
+        n <- choose (1, 10)
+        u <- zip
+            <$> vector n
+            <*> vector n
+        return $ UTxO $ Map.fromList u
+
+instance (Ord a, Arbitrary a) => Arbitrary (Range a) where
+    arbitrary = Range <$> arbitrary <*> arbitrary
+
+    shrink (Range from to) = filter rangeIsValid $
+        [Range from' to | from' <- shrink from]
+        ++ [Range from to' | to' <- shrink to]
+
+{-------------------------------------------------------------------------------
+                                 Address
+-------------------------------------------------------------------------------}
+
+instance Arbitrary Address where
+    arbitrary = Address . B8.pack <$> vector 29
+
+instance Arbitrary (Index 'Soft depth) where
+    shrink _ = []
+    arbitrary = arbitraryBoundedEnum
+
+instance Arbitrary (Index 'Hardened depth) where
+    shrink _ = []
+    arbitrary = arbitraryBoundedEnum
+
+instance Arbitrary (Index 'WholeDomain depth) where
+    shrink _ = []
+    arbitrary = arbitraryBoundedEnum
+
+{-------------------------------------------------------------------------------
+                              Sequential State
+-------------------------------------------------------------------------------}
+
+instance Arbitrary (SeqState 'Mainnet SophieKey) where
+    shrink (SeqState intPool extPool ixs rwd prefix) =
+        (\(i, e, x) -> SeqState i e x rwd prefix) <$> shrink (intPool, extPool, ixs)
+    arbitrary = SeqState
+        <$> arbitrary
+        <*> arbitrary
+        <*> arbitrary
+        <*> pure arbitraryRewardAccount
+        <*> pure defaultSeqStatePrefix
+
+defaultSeqStatePrefix :: DerivationPrefix
+defaultSeqStatePrefix = DerivationPrefix
+    ( purposeCIP1852
+    , coinTypeBcc
+    , minBound
+    )
+
+instance Arbitrary (SophieKey 'RootK XPrv) where
+    shrink _ = []
+    arbitrary = elements rootKeysSeq
+
+-- FIXME:
+-- Store pending change outside of the sequential state. Pending state is not
+-- affected by rollbacks and therefore, managing with checkpoints makes testing
+-- fairly difficult as many nice properties fail if we consider non empty change
+-- indexes. For example:
+--
+-- - put checkpoint with pending indexes
+-- - put checkpoint with empty pending indexes
+-- - read latest checkpoint
+--
+-- We would expect the latest checkpoint to be the one we just inserted, but
+-- currently, it'll also contains the pending indexes from the previously
+-- inserted checkpoints!
+--
+--    shrink =
+--        map Seq.pendingIxsFromList . shrink . Seq.pendingIxsToList
+--    arbitrary =
+--        Seq.pendingIxsFromList . Set.toList <$> arbitrary
+instance Arbitrary (Seq.PendingIxs) where
+    arbitrary = pure Seq.emptyPendingIxs
+
+instance Arbitrary (AddressPool 'UtxoExternal SophieKey) where
+    arbitrary = pure $ mkAddressPool @'Mainnet
+        (ParentContextUtxo arbitrarySeqAccount) minBound mempty
+
+instance Arbitrary (AddressPool 'UtxoInternal SophieKey) where
+    arbitrary = pure $ mkAddressPool @'Mainnet
+        (ParentContextUtxo arbitrarySeqAccount) minBound mempty
+
+-- Properties are quite heavy on the generation of values, although for
+-- private keys, it isn't particularly useful / relevant to generate many of
+-- them as they're really treated as an opaque type. Instead, we generate them
+-- once, and picks from the list.
+rootKeysSeq :: [SophieKey 'RootK XPrv]
+rootKeysSeq = unsafePerformIO $ generate (vectorOf 10 genRootKeysSeq)
+  where
+    genRootKeysSeq :: Gen (SophieKey 'RootK XPrv)
+    genRootKeysSeq = do
+        s <- SomeMnemonic <$> genMnemonic @12
+        g <- frequency
+                [ (1, return Nothing)
+                , (3, Just . SomeMnemonic <$> genMnemonic @12)
+                ]
+        e <- genPassphrase @"encryption" (0, 16)
+        return $ Sophie.generateKeyFromSeed (s, g) e
+{-# NOINLINE rootKeysSeq #-}
+
+arbitrarySeqAccount
+    :: SophieKey 'AccountK XPub
+arbitrarySeqAccount =
+    publicKey $ Sophie.unsafeGenerateKeyFromSeed (mw, Nothing) mempty
+  where
+    mw = someDummyMnemonic (Proxy @15)
+
+arbitraryRewardAccount
+    :: SophieKey 'AddressK XPub
+arbitraryRewardAccount =
+    publicKey $ Sophie.unsafeGenerateKeyFromSeed (mw, Nothing) mempty
+  where
+    mw = someDummyMnemonic (Proxy @15)
+
+{-------------------------------------------------------------------------------
+                                 Random State
+-------------------------------------------------------------------------------}
+
+instance Arbitrary (RndState 'Mainnet) where
+    shrink (RndState k ix addrs pending g) =
+        [ RndState k ix' addrs' pending' g
+        | (ix', addrs', pending') <- shrink (ix, addrs, pending)
+        ]
+    arbitrary = RndState
+        (Passphrase "passphrase")
+        minBound
+        <$> scale (min 10) arbitrary
+        <*> (pure mempty) -- FIXME: see comment on 'Arbitrary Seq.PendingIxs'
+        <*> pure (mkStdGen 42)
+
+instance Arbitrary (ColeKey 'RootK XPrv) where
+    shrink _ = []
+    arbitrary = elements rootKeysRnd
+
+genRootKeysRnd :: Gen (ColeKey 'RootK XPrv)
+genRootKeysRnd = Cole.generateKeyFromSeed
+    <$> arbitrary
+    <*> genPassphrase @"encryption" (0, 16)
+
+genPassphrase :: (Int, Int) -> Gen (Passphrase purpose)
+genPassphrase range = do
+    n <- choose range
+    InfiniteList bytes _ <- arbitrary
+    return $ Passphrase $ BA.convert $ BS.pack $ take n bytes
+
+rootKeysRnd :: [ColeKey 'RootK XPrv]
+rootKeysRnd = unsafePerformIO $ generate (vectorOf 10 genRootKeysRnd)
+{-# NOINLINE rootKeysRnd #-}
+
+{-------------------------------------------------------------------------------
+                                 Shared State
+-------------------------------------------------------------------------------}
+
+-- Shared state is composed of static (ie., not depending on checkpoint) and
+-- depending on checkpoint part. When in pending state all parts are static,
+-- when in active state context address pool is depending on checkpoint the rest is static.
+-- In order to proceed like for sequential/random wallet we will work with active state
+-- and make
+
+instance Arbitrary (SharedState 'Mainnet SharedKey) where
+    shrink (SharedState prefix (ReadyFields pool)) =
+        SharedState prefix <$> (ReadyFields <$> shrink pool)
+    shrink _ = []
+    arbitrary =
+        SharedState defaultSharedStatePrefix
+        <$> (ReadyFields <$> arbitrary)
+
+defaultSharedStatePrefix :: DerivationPrefix
+defaultSharedStatePrefix = DerivationPrefix
+    ( purposeCIP1854
+    , coinTypeBcc
+    , minBound @(Index 'Hardened 'AccountK)
+    )
+
+instance Arbitrary (Script Cosigner) where
+    arbitrary = pure $
+        RequireAllOf [RequireSignatureOf (Cosigner 0), RequireAnyOf [ActiveFromSlot 200, ActiveUntilSlot 100]]
+
+genScriptTemplateHardCoded :: Gen ScriptTemplate
+genScriptTemplateHardCoded =
+    ScriptTemplate (Map.fromList [(Cosigner 0, getRawKey arbitrarySeqAccount)] ) <$> arbitrary
+
+instance Arbitrary (AddressPool 'UtxoExternal SharedKey) where
+    arbitrary = do
+        ctx <- ParentContextShared arbitrarySharedAccount
+            <$> genScriptTemplateHardCoded <*> pure Nothing
+        pure $ mkAddressPool @'Mainnet ctx minBound mempty
+
+instance Arbitrary Seq.AddressPoolGap where
+    arbitrary = pure defaultAddressPoolGap
+
+arbitrarySharedAccount
+    :: SharedKey 'AccountK XPub
+arbitrarySharedAccount =
+    publicKey $ Shared.unsafeGenerateKeyFromSeed (mw, Nothing) mempty
+  where
+    mw = someDummyMnemonic (Proxy @15)
+
+{-------------------------------------------------------------------------------
+                             Protocol Parameters
+-------------------------------------------------------------------------------}
+
+instance Arbitrary ProtocolParameters where
+    shrink = genericShrink
+    arbitrary = ProtocolParameters
+        <$> arbitrary
+        <*> arbitrary
+        <*> choose (0, 100)
+        <*> arbitrary
+        <*> arbitrary
+        <*> arbitrary
+        <*> arbitrary
+        <*> arbitrary
+
+instance Arbitrary ExecutionUnitPrices where
+    shrink = genericShrink
+    arbitrary = genericArbitrary
+
+instance Arbitrary MinimumUTxOValue where
+    shrink = genericShrink
+    arbitrary = genericArbitrary
+
+instance Arbitrary (EraInfo EpochNo) where
+    arbitrary = genericArbitrary
+    shrink = genericShrink
+
+instance Arbitrary TxParameters where
+    shrink = genericShrink
+    arbitrary = TxParameters
+        <$> arbitrary
+        <*> fmap Quantity (choose (0, 1000))
+        <*> arbitrary
+
+instance Arbitrary FeePolicy where
+    arbitrary = LinearFee
+        <$> fmap Quantity (choose (0, 1000))
+        <*> fmap Quantity (choose (0, 100))
+
+instance (Integral a, Arbitrary a) => Arbitrary (Quantity n a) where
+    shrink (Quantity a) = Quantity <$> shrinkIntegral a
+    arbitrary = Quantity <$> arbitrary
+
+{-------------------------------------------------------------------------------
+                                 Miscellaneous
+-------------------------------------------------------------------------------}
+
+deriving instance Arbitrary a => Arbitrary (ShowFmt a)
+
+-- Necessary unsound Show instance for QuickCheck failure reporting
+instance Show XPrv where
+    show = const "XPrv"
+
+-- Necessary unsound Eq instance for QuickCheck properties
+instance Eq XPrv where
+    a == b = unXPrv a == unXPrv b
+
+instance Arbitrary Percentage where
+    arbitrary = unsafeMkPercentage . (% upperLimit) <$> choose (0, upperLimit)
+      where
+        upperLimit = 10_000
+
+instance Arbitrary DecentralizationLevel where
+    arbitrary = DecentralizationLevel <$> arbitrary
+
+instance Arbitrary RewardAccount where
+    arbitrary =
+        RewardAccount . BS.pack <$> vector 28
+
+instance Arbitrary (Hash purpose) where
+    arbitrary = do
+        Hash . convertToBase Base16 . BS.pack <$> vector 16
+
+instance Arbitrary PoolId where
+    arbitrary = do
+        PoolId . convertToBase Base16 . BS.pack <$> vector 16
+
+instance Arbitrary DelegationCertificate where
+    arbitrary = oneof
+        [ CertDelegateNone <$> genArbitraryRewardAccount
+        , CertDelegateFull <$> genArbitraryRewardAccount <*> arbitrary
+        ]
+      where
+        genArbitraryRewardAccount = pure $ RewardAccount $ BS.replicate 32 0
+
+instance Arbitrary Word31 where
+    arbitrary = arbitrarySizedBoundedIntegral
+    shrink = shrinkIntegral
+
+instance Arbitrary AddressState where
+    arbitrary = genericArbitrary
+
+instance Arbitrary SomeMnemonic where
+    arbitrary = SomeMnemonic <$> genMnemonic @12
+
+instance Arbitrary TxScriptValidity where
+    arbitrary = genTxScriptValidity
+    shrink = shrinkTxScriptValidity
+
+{-------------------------------------------------------------------------------
+                                   Buildable
+-------------------------------------------------------------------------------}
+
+deriving instance Buildable a => Buildable (Identity a)
+
+instance Buildable GenTxHistory where
+    build (GenTxHistory txs) = blockListF' "-" tupleF txs
+
+instance Buildable (SophieKey depth XPrv, Hash "encryption") where
+    build (_, h) = tupleF (xprvF, prefixF 8 hF <> "..." <> suffixF 8 hF)
+      where
+        xprvF = "XPrv" :: Builder
+        hF = build (toText (coerce @_ @(Hash "BlockHeader") h))
+
+instance Buildable MockChain where
+    build (MockChain chain) = blockListF' mempty build chain
+
+instance Buildable (SharedState 'Mainnet SharedKey) where
+    build (SharedState _ (PendingFields _)) = "not supported here"
+    build (SharedState prefix (ReadyFields pool)) =
+        build (printStateActive <> printIndex prefix) <> printPool
+      where
+        printStateActive = "shared wallet state: active"
+        printPool = build pool
+        printIndex (DerivationPrefix (_,_,ix)) = " hardened index: "<> toText (getIndex ix) <> " "

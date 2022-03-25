@@ -1,0 +1,277 @@
+--------------------------------------------------------------------------------
+-- Cabal project file
+-- -----------------------------------------------------------------------------
+--
+-- Example build command:
+--
+--   cabal build all --enable-tests --enable-benchmarks -O0
+--
+-- -----------------------------------------------------------------------------
+-- Updating this file
+--
+-- Note that the canonical source of dependencies is stack.yaml and
+-- cabal.project should be kept in sync with that. The Nix packages
+-- are generated from stack.yaml not cabal.project.
+--
+-- -----------------------------------------------------------------------------
+-- How to use with the nix-shell
+--
+-- The advantage of building under nix-shell is that the correct
+-- versions of all build and test dependencies are set up for you in the
+-- nix-shell environment.
+--
+-- All dependencies, including Haskell package dependencies, have been
+-- built on Hydra and are transparently downloaded from the IOHK
+-- cache.
+--
+-- The Haskell package set in shell.nix is automatically generated
+-- from stack.yaml.
+--
+-- To build, start "nix-shell", then run Cabal inside:
+--     nix-shell
+--     cabal build all -O0
+--
+-- To build with profiling enabled, use:
+--    nix-shell --arg profiling true
+--    cabal configure --enable-tests --enable-benchmarks --enable-profiling
+--    cabal build all
+--
+--------------------------------------------------------------------------------
+
+index-state: 2021-06-30T00:00:00Z
+with-compiler: ghc-8.10.5
+
+packages:
+    lib/core/
+  , lib/core-integration/
+  , lib/cli/
+  , lib/launcher/
+  , lib/numeric/
+  , lib/text-class/
+  , lib/test-utils/
+  , lib/sophie/
+  , lib/strict-non-empty-containers/
+
+-- Using a fork until our patches can be merged upstream
+source-repository-package
+  type: git
+  location: https://github.com/The-Blockchain-Company/optparse-applicative
+  tag: 7497a29cb998721a9068d5725d49461f2bba0e7a
+  --sha256: 09pr7m9gjsk8889m9d3mj75p69viv1acnrq63dgb11jl5gnnsblr
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/Win32-network
+    tag: 3825d3abf75f83f406c1f7161883c438dac7277d
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-addresses
+    tag: 4003fc09780da61bc09d85337bdd4c7664aa49ba
+    subdir: command-line
+            core
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-base
+    tag: e8a48cf0500b03c744c7fc6f2fedb86e8bdbe055
+    subdir:
+            base-deriving-via
+            binary
+            binary/test
+            bcc-crypto-class
+            bcc-crypto-praos
+            bcc-crypto-tests
+            orphans-deriving-via
+            measures
+            strict-containers
+            slotting
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-crypto
+    tag: 07397f0e50da97eaa0575d93bee7ac4b2b2576ec
+
+source-repository-package
+  type: git
+  location: https://github.com/The-Blockchain-Company/zerepoch
+  tag: edc6d4672c41de4485444122ff843bc86ff421a0
+  subdir:
+    zerepoch-core
+    zerepoch-ledger
+    zerepoch-ledger-api
+    zerepoch-tx
+    zerepoch-tx-plugin
+    prettyprinter-configurable
+    stubs/zerepoch-ghc-stub
+    word-array
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-ledger-specs
+    tag: f827a4321e42f528e25f6079f7af3eb18f10d391
+    subdir: aurum/impl
+            cole/chain/executable-spec
+            cole/crypto
+            cole/crypto/test
+            cole/ledger/executable-spec
+            cole/ledger/impl
+            cole/ledger/impl/test
+            bcc-ledger-core
+            semantics/executable-spec
+            semantics/small-steps-test
+            sophie/chain-and-ledger/dependencies/non-integer
+            sophie/chain-and-ledger/executable-spec
+            sophie/chain-and-ledger/sophie-spec-ledger-test
+            sophie-ma/impl
+            sophie-ma/sophie-ma-test
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-node
+    tag: 0fb43f4e3da8b225f4f86557aed90a183981a64f
+    subdir: bcc-api
+            bcc-cli
+            bcc-config
+            bcc-node
+            bcc-node-chairman
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-prelude
+    tag: fd773f7a58412131512b9f694ab95653ac430852
+    subdir: bcc-prelude
+            bcc-prelude-test
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/bcc-sl-x509
+    tag: 12925934c533b3a6e009b61ede555f8f26bac037
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/shepards
+    tag: cde90a2b27f79187ca8310b6549331e59595e7ba
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/tbco-monitoring-framework
+    tag: 808724ff8a19a33d0ed06f9ef59fbd900b08553c
+    subdir: contra-tracer
+            tbco-monitoring
+            plugins/backend-aggregation
+            plugins/backend-ekg
+            plugins/backend-monitoring
+            plugins/backend-trace-forwarder
+            tracer-transformers
+
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/shardagnostic-network
+    tag: aa7bc087737edca29133844b14bb7cba2cd213f2
+    subdir:
+      io-sim
+      io-classes
+      monoidal-synchronisation
+      network-mux
+      shardagnostic-consensus
+      shardagnostic-consensus-cole
+      shardagnostic-consensus-bcc
+      shardagnostic-consensus-sophie
+      shardagnostic-network
+      shardagnostic-network-framework
+      shardagnostic-network-testing
+      typed-protocols
+      typed-protocols-examples
+      ntp-client
+
+source-repository-package
+    type: git
+    location: https://github.com/snoyberg/http-client.git
+    tag: 1a75bdfca014723dd5d40760fad854b3f0f37156
+    subdir: http-client
+
+-- Drops an instance breaking bcc-node.
+source-repository-package
+    type: git
+    location: https://github.com/The-Blockchain-Company/flat.git
+    tag: ee59880f47ab835dbd73bea0847dab7869fc20d8
+    --sha256: 1lrzknw765pz2j97nvv9ip3l1mcpf2zr4n56hwlz0rk7wq7ls4cm
+
+-- -------------------------------------------------------------------------
+-- Constraints tweaking
+
+-- bcc-addresses unit tests bring in some version constraint conflicts.
+--
+-- 1. hjsonschema and hjsonpointer deps have overly strict bounds.
+-- 2. it has strict aeson < 1.5 dep - this will be fixed in the next release.
+allow-newer:
+    hjsonschema:*
+  , hjsonpointer:*
+  , bcc-sl-x509:ip
+  , bcc-addresses:aeson
+  , size-based:template-haskell
+
+constraints:
+    hedgehog >= 1.0.2
+  -- dependency of systemd-2.3.0
+  , network >= 3.1.1.1
+  -- choose versions that work with base >= 4.12
+  , hjsonpointer >= 1.5.0
+  , hjsonschema >= 1.10.0
+
+-- ----------------------------------------------------------------
+-- Flags for dependencies
+
+package bcc-config
+  flags: -systemd
+package bcc-node
+  flags: -systemd
+
+-- -------------------------------------------------------------------------
+-- Enable specific tests in this repo
+
+test-show-details: direct
+
+package bcc-wallet
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-wallet-core
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-wallet-cli
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-wallet-launcher
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-wallet-text-class
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-numeric
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-wallet-core-integration
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package bcc-wallet-test-utils
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+package strict-non-empty-containers
+  tests: True
+  ghc-options: -fwrite-ide-info
+
+-- Now disable all other tests with a global flag.
+-- This is what they do in bcc-node/cabal.project.
+
+tests: False
+
+-- -------------------------------------------------------------------------

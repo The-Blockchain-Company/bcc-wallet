@@ -1,0 +1,75 @@
+{
+    "seed": 4955423387302849722,
+    "samples": [
+        {
+            "amount": {
+                "quantity": 60,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 9,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 117,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 109,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 110,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 233,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 46,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 33,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 96,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        },
+        {
+            "amount": {
+                "quantity": 134,
+                "unit": "entropic"
+            },
+            "address": "<addr>"
+        }
+    ]
+}

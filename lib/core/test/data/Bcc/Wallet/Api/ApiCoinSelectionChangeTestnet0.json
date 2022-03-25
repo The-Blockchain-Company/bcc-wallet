@@ -1,0 +1,286 @@
+{
+    "seed": 21836623792923729,
+    "samples": [
+        {
+            "amount": {
+                "quantity": 186,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "20891",
+                "736",
+                "4308",
+                "11283",
+                "4634",
+                "7707",
+                "29134",
+                "15814",
+                "12055",
+                "2324",
+                "27785",
+                "23341",
+                "22825",
+                "17257",
+                "17352",
+                "22466",
+                "5861",
+                "8851",
+                "11368",
+                "11082",
+                "20396",
+                "11804",
+                "23955",
+                "8930",
+                "7932",
+                "13854",
+                "9240",
+                "27734",
+                "4559",
+                "2818"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 76,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "1101",
+                "23123",
+                "30889",
+                "11642"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 86,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "14430",
+                "26355",
+                "18972",
+                "11875",
+                "31507",
+                "12577"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 254,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "22642",
+                "2644",
+                "18080",
+                "5126",
+                "5915",
+                "10776",
+                "26069",
+                "14061",
+                "25806",
+                "5637",
+                "30254",
+                "3570",
+                "31454",
+                "2972",
+                "2917"
+            ],
+            "assets": [
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 1,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 5,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 17,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                {
+                    "asset_name": "546f6b656e42",
+                    "quantity": 6,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                {
+                    "asset_name": "546f6b656e44",
+                    "quantity": 6,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 2,
+                    "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                }
+            ]
+        },
+        {
+            "amount": {
+                "quantity": 130,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "1466",
+                "32098",
+                "4803",
+                "543",
+                "32592",
+                "19682"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 54,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "31425",
+                "29074",
+                "17715",
+                "30790",
+                "17374",
+                "15813",
+                "18060",
+                "6038",
+                "22859",
+                "32",
+                "25775",
+                "14645",
+                "12432",
+                "30321",
+                "1146",
+                "9635",
+                "8017",
+                "20229"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 204,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "10642",
+                "21985",
+                "6545",
+                "10002",
+                "4147",
+                "40",
+                "19690"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 84,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "9054",
+                "25582",
+                "27198",
+                "5319",
+                "10419",
+                "21644",
+                "15736",
+                "4309",
+                "29773",
+                "15399",
+                "21234",
+                "7298",
+                "7982",
+                "23302",
+                "30658",
+                "2645",
+                "31141",
+                "26925",
+                "7577",
+                "24038",
+                "13440",
+                "32163",
+                "32355",
+                "11821",
+                "18948"
+            ],
+            "assets": []
+        },
+        {
+            "amount": {
+                "quantity": 132,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "22360",
+                "13539",
+                "19515",
+                "25846",
+                "18676",
+                "10652",
+                "11002",
+                "22955",
+                "8045",
+                "24960",
+                "4910",
+                "579",
+                "8291",
+                "25575",
+                "1817",
+                "20697"
+            ],
+            "assets": [
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 2,
+                    "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                    "asset_name": "546f6b656e43",
+                    "quantity": 4,
+                    "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                },
+                {
+                    "asset_name": "546f6b656e41",
+                    "quantity": 10,
+                    "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                }
+            ]
+        },
+        {
+            "amount": {
+                "quantity": 223,
+                "unit": "entropic"
+            },
+            "address": "<addr>",
+            "derivation_path": [
+                "29105",
+                "22407",
+                "1388",
+                "31224",
+                "23660",
+                "6604",
+                "2001"
+            ],
+            "assets": []
+        }
+    ]
+}

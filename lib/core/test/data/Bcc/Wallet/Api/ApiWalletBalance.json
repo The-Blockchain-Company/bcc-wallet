@@ -1,0 +1,145 @@
+{
+    "seed": 27252381885193408,
+    "samples": [
+        {
+            "reward": {
+                "quantity": 6,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 3,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 248,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 63,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 228,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 84,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 202,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 26,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 129,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 40,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 175,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 6,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 19,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 4,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 76,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 197,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 94,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 156,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 245,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 151,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 241,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 117,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 6,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 5,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 149,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 5,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 195,
+                "unit": "entropic"
+            }
+        },
+        {
+            "reward": {
+                "quantity": 228,
+                "unit": "entropic"
+            },
+            "total": {
+                "quantity": 216,
+                "unit": "entropic"
+            },
+            "available": {
+                "quantity": 20,
+                "unit": "entropic"
+            }
+        }
+    ]
+}

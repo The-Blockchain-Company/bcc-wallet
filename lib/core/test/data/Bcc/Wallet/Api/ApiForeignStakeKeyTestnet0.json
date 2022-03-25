@@ -1,0 +1,115 @@
+{
+    "seed": 6692059182321904665,
+    "samples": [
+        {
+            "stake": {
+                "quantity": 239,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 147,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 23,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 195,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 173,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 154,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 182,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 164,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 171,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 111,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 64,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 204,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 216,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 40,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 49,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 118,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 105,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 113,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 70,
+                "unit": "entropic"
+            },
+            "key": "<stake-addr>",
+            "reward_balance": {
+                "quantity": 231,
+                "unit": "entropic"
+            }
+        }
+    ]
+}

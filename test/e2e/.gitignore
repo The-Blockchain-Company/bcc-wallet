@@ -1,0 +1,24 @@
+# data for tests
+/bins/
+/state/
+
+# secrets
+/fixtures/*.json
+
+# local environment variables
+/.envrc-local
+
+# rspec reports and failure tracking
+/spec/reports/
+.rspec_status
+
+# temporary files
+/.bundle/
+/tmp/
+/bcc-wallet-*/
+/binaryDist/
+*binary-dist*
+*.prv
+
+# rake
+/.rakeTasks/

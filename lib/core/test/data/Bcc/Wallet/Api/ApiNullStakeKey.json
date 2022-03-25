@@ -1,0 +1,65 @@
+{
+    "seed": 772200001575048498,
+    "samples": [
+        {
+            "stake": {
+                "quantity": 85,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 170,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 76,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 114,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 231,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 246,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 90,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 4,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 150,
+                "unit": "entropic"
+            }
+        },
+        {
+            "stake": {
+                "quantity": 32,
+                "unit": "entropic"
+            }
+        }
+    ]
+}

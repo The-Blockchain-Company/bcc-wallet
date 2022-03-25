@@ -1,0 +1,279 @@
+require "rspec/core/rake_task"
+require "bcc_wallet"
+require_relative "env"
+require_relative "helpers/utils"
+
+include Helpers::Utils
+
+RSpec::Core::RakeTask.new(:spec)
+
+STATE = absolute_path ENV['TESTS_E2E_STATEDIR']
+CONFIGS = absolute_path ENV['BCC_NODE_CONFIGS']
+LOGS = absolute_path ENV['TESTS_LOGDIR']
+NODE_DB = absolute_path ENV['TESTS_NODE_DB']
+WALLET_DB = absolute_path ENV['TESTS_WALLET_DB']
+
+BINS = absolute_path ENV['TESTS_E2E_BINDIR']
+
+FIXTURES_FILE = absolute_path ENV['TESTS_E2E_FIXTURES_FILE']
+FIXTURES_SECRET = absolute_path ENV['TESTS_E2E_FIXTURES']
+
+TOKEN_METADATA = ENV['TESTS_E2E_TOKEN_METADATA']
+WALLET_PORT = ENV['WALLET_PORT']
+
+path_separator = is_win? ? ';' : ':'
+ENV['PATH'] = "#{BINS}#{path_separator}#{ENV['PATH']}"
+
+task :default => :spec
+
+task :fixture_wallets_encode do
+  desc "Encode fixture wallets from #{FIXTURES_FILE} using $TESTS_E2E_FIXTURES phrase"
+  puts "\n  >> Encoding #{FIXTURES_FILE}..."
+
+  puts `gpg --pinentry-mode loopback --passphrase=#{FIXTURES_SECRET} --symmetric --output=#{FIXTURES_FILE}.gpg #{FIXTURES_FILE}`
+end
+
+task :fixture_wallets_decode do
+  desc "Decode fixture wallets from #{FIXTURES_FILE}.gpg using $TESTS_E2E_FIXTURES phrase"
+  encoded_file = "#{FIXTURES_FILE}.gpg"
+  decoded_file = FIXTURES_FILE
+  if File.exists?(decoded_file)
+    puts "\n  >> Skipping decoding #{encoded_file}... #{decoded_file} already exists!"
+  else
+    puts "\n  >> Decoding #{FIXTURES_FILE}.gpg..."
+    puts `gpg --pinentry-mode loopback --yes --passphrase=#{FIXTURES_SECRET} --output #{decoded_file} --decrypt #{encoded_file}`
+  end
+end
+
+task :fixture_wallets_template do
+  puts "\n  >> Creating #{FIXTURES_FILE}"
+
+  fixture_wallets = { :linux => { :sophie => mnemonic_sentence(24),
+                                 :icarus => mnemonic_sentence(15),
+                                 :cole => mnemonic_sentence(12) },
+                      :macos => { :sophie => mnemonic_sentence(24),
+                                 :icarus => mnemonic_sentence(15),
+                                 :cole => mnemonic_sentence(12) },
+                      :windows => { :sophie => mnemonic_sentence(24),
+                                   :icarus => mnemonic_sentence(15),
+                                   :cole => mnemonic_sentence(12) }
+                    }
+  if File.exists?(FIXTURES_FILE)
+    err = "
+              File #{FIXTURES_FILE} already exists!
+              I don't want to overwrite it in case it
+              contains fixture wallets already...
+            "
+    STDERR.puts err
+  else
+    File.open(FIXTURES_FILE, 'w') { |f| f.write JSON.pretty_generate(fixture_wallets) }
+  end
+
+end
+
+task :clean_logs, [:env] do |task, args|
+  puts "\n  >> Removing logs"
+  log_dir = File.join(LOGS, args[:env])
+  rm_files(log_dir)
+end
+
+task :clean_bins do
+  puts "\n  >> Removing bins"
+  rm_files(BINS)
+end
+
+task :wait_until_node_synced do
+  puts "\n  >> Waiting for node to be synced"
+
+  network = BccWallet.new.misc.network
+  timeout = 180
+  current_time = Time.now
+  timeout_treshold = current_time + timeout
+  puts "Timeout: #{timeout}s"
+  puts "Threshold: #{timeout_treshold}"
+  begin
+    current_time = Time.now
+    while network.information["sync_progress"]["status"] == "syncing" do
+      puts "Syncing... #{network.information["sync_progress"]["progress"]["quantity"]}%"
+      sleep 15
+    end
+  rescue
+    retry if (current_time <= timeout_treshold)
+    raise("Could not connect to wallet within #{timeout} seconds...")
+  end
+
+  puts "\n>> Bcc-node and bcc-wallet are synced! <<"
+end
+
+##
+# `rake start_node_and_wallet[testnet]' assumes bcc-node and bcc-wallet in $TESTS_E2E_BINDIR
+task :start_node_and_wallet, [:env] do |task, args|
+  puts "\n  >> Setting up bcc-node and bcc-wallet"
+
+  bin_dir = BINS == '' ? BINS : "#{BINS}/"
+  config_dir = File.join(CONFIGS, args[:env])
+  log_dir = File.join(LOGS, args[:env])
+  wallet_db_dir = File.join(WALLET_DB, args[:env])
+  node_db_dir = File.join(NODE_DB, args[:env])
+  cd = Dir.pwd
+  mk_dir(STATE)
+  mk_dir(log_dir)
+
+  if is_win?
+    # create bcc-node.bat file
+    node_cmd = "#{bin_dir}bcc-node.exe run --config #{config_dir}/configuration.json --topology #{config_dir}/topology.json --database-path #{node_db_dir} --socket-path \\\\.\\pipe\\bcc-node-testnet"
+    File.open("bcc-node.bat", "w") do |f|
+      f.write(node_cmd)
+    end
+
+    # create bcc-wallet.bat file
+    wallet_cmd = "#{bin_dir}bcc-wallet.exe serve --port #{WALLET_PORT} --node-socket \\\\.\\pipe\\bcc-node-testnet --testnet #{config_dir}/genesis-cole.json --database #{wallet_db_dir} --token-metadata-server #{TOKEN_METADATA}"
+    File.open("bcc-wallet.bat", "w") do |f|
+      f.write(wallet_cmd)
+    end
+
+    install_node = "nssm install bcc-node #{cd}/bcc-node.bat"
+    install_wallet = "nssm install bcc-wallet #{cd}/bcc-wallet.bat"
+    log_stdout_node = "nssm set bcc-node AppStdout #{log_dir}/node.log"
+    log_stderr_node = "nssm set bcc-node AppStderr #{log_dir}/node.log"
+    log_stdout_wallet = "nssm set bcc-wallet AppStdout #{log_dir}/wallet.log"
+    log_stderr_wallet = "nssm set bcc-wallet AppStderr #{log_dir}/wallet.log"
+    start_node = "nssm start bcc-node"
+    start_wallet = "nssm start bcc-wallet"
+
+    cmd install_node
+    cmd install_wallet
+    cmd log_stdout_node
+    cmd log_stderr_node
+    cmd log_stdout_wallet
+    cmd log_stderr_wallet
+    cmd start_node
+    cmd start_wallet
+  else
+    start_node = "#{bin_dir}bcc-node run --config #{config_dir}/configuration.json --topology #{config_dir}/topology.json --database-path #{node_db_dir} --socket-path #{node_db_dir}/node.socket"
+    start_wallet = "#{bin_dir}bcc-wallet serve --port #{WALLET_PORT} --node-socket #{node_db_dir}/node.socket --testnet #{config_dir}/genesis-cole.json --database #{wallet_db_dir} --token-metadata-server #{TOKEN_METADATA}"
+
+    cmd "screen -dmS NODE_#{args[:env]} -L -Logfile #{log_dir}/node.log #{start_node}"
+    cmd "screen -dmS WALLET_#{args[:env]} -L -Logfile #{log_dir}/wallet.log #{start_wallet}"
+    cmd "screen -ls"
+  end
+end
+
+##
+# Utility task for getting binaries, configs and starting wallet and node
+task :launch_on, [:env] do |task, args|
+  env = args[:env]
+
+  if BINS == ''
+    puts "\n  >> Skipping getting latest binaries. Will launch wallet and node from $PATH."
+  else
+    Rake::Task[:get_latest_bins].invoke
+  end
+
+  Rake::Task[:get_latest_configs].invoke(env)
+  Rake::Task[:start_node_and_wallet].invoke(env)
+end
+
+task :stop_node_and_wallet, [:env] do |task, args|
+  puts "\n  >> Stopping bcc-node and bcc-wallet"
+
+  if is_win?
+    cmd "nssm stop bcc-wallet"
+    cmd "nssm stop bcc-node"
+
+    cmd "nssm remove bcc-wallet confirm"
+    cmd "nssm remove bcc-node confirm"
+  else
+    cmd "screen -XS WALLET_#{args[:env]} quit"
+    cmd "screen -XS NODE_#{args[:env]} quit"
+  end
+
+end
+
+task :get_latest_bins do
+  puts "\n  >> Getting latest node and wallet binaries from Hydra into #{BINS}"
+
+  wget(get_latest_binary_url)
+  mk_dir(BINS)
+  if is_win?
+    cmd "unzip -o binary-dist -d #{BINS}"
+    cmd "#{BINS}/bcc-node.exe version"
+    cmd "#{BINS}/bcc-wallet.exe version"
+  else
+    Rake::Task[:clean_bins].invoke
+    cmd "rm -rf bcc-wallet-*/"
+    cmd "tar -xvf binary-dist"
+    cmd "cp -r bcc-wallet-*/* #{BINS}"
+
+    cmd "#{BINS}/bcc-node version"
+    cmd "#{BINS}/bcc-wallet version"
+  end
+end
+
+task :get_latest_configs, [:env] do |task, args|
+  env = args[:env]
+  out = File.join(CONFIGS, env)
+
+  if (File.exist?(out) && (not File.writable?(out)))
+    # The config directory is probably a /nix/store path
+    puts "\n  >> Using config directory '#{out}'"
+  else
+    puts "\n  >> Getting latest configs for '#{env}' into #{CONFIGS}"
+
+    base_url = get_latest_configs_base_url
+    mk_dir(STATE)
+    mk_dir(CONFIGS)
+    mk_dir(out)
+    config_file = File.join(out, "configuration.json")
+    wget("#{base_url}/#{env}-config.json", config_file)
+    wget("#{base_url}/#{env}-cole-genesis.json", "#{out}/genesis-cole.json")
+    wget("#{base_url}/#{env}-sophie-genesis.json", "#{out}/genesis-sophie.json")
+    wget("#{base_url}/#{env}-aurum-genesis.json", "#{out}/genesis-aurum.json")
+    wget("#{base_url}/#{env}-topology.json", "#{out}/topology.json")
+    # remove environment names from genesis files
+    config = File.read(config_file)
+    config_edited = config.gsub(/#{env}-([^-]+)-genesis.json/, 'genesis-\1.json')
+    File.open(config_file, "w") { |file| file.puts config_edited }
+  end
+end
+
+task :get_docker_logs do
+  puts "\n  >> Getting docker logs into #{LOGS}"
+
+  mk_dir(LOGS)
+  node_logfile = `docker inspect --format='{{.LogPath}}' bcc-node`.gsub("\n", '')
+  wallet_logfile = `docker inspect --format='{{.LogPath}}' bcc-wallet`.gsub("\n", '')
+
+  cmd "sudo cp #{node_logfile} #{LOGS}/node.log"
+  cmd "sudo cp #{wallet_logfile} #{LOGS}/wallet.log"
+
+  # Add permissions so logs can be uploaded from workflow
+  cmd "sudo chmod a+rw #{LOGS}/node.log"
+  cmd "sudo chmod a+rw #{LOGS}/wallet.log"
+end
+
+task :run_on, [:env, :sync_strategy, :skip_configs] do |task, args|
+  puts "\n>> Setting up env and running tests..."
+  puts "TESTS_E2E_STATEDIR=#{STATE}"
+  env = args[:env]
+  sync_strategy = args[:sync_strategy] || :sync
+
+  if BINS == ''
+    puts "\n  >> Skipping getting latest binaries. Will test wallet and node from $PATH."
+  else
+    Rake::Task[:get_latest_bins].invoke
+  end
+
+  Rake::Task[:fixture_wallets_decode].invoke
+  Rake::Task[:get_latest_configs].invoke(env) unless args[:skip_configs]
+  Rake::Task[:start_node_and_wallet].invoke(env)
+
+  if sync_strategy == "no-sync"
+    puts "\n  >> Skipping waiting for node to be synced..."
+  else
+    Rake::Task[:wait_until_node_synced].invoke
+  end
+
+  Rake::Task[:spec].invoke
+  Rake::Task[:stop_node_and_wallet].invoke(env)
+end

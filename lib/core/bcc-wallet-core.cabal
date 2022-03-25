@@ -1,0 +1,478 @@
+name:                bcc-wallet-core
+version:             2021.9.29
+synopsis:            The Wallet Backend for a Bcc node.
+description:         Please see README.md
+homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
+author:              IOHK Engineering Team
+maintainer:          operations@tbco.io
+copyright:           2021-2022 TBCO
+license:             Apache-2.0
+category:            Web
+build-type:          Simple
+extra-source-files:  specifications/api/swagger.yaml
+cabal-version:       >=1.10
+
+flag release
+    description: Enable optimization and `-Werror`
+    default: False
+    manual: True
+
+library
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -Wall
+      -Wcompat
+      -fwarn-redundant-constraints
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      aeson
+    , async
+    , base
+    , bech32
+    , bech32-th
+    , binary
+    , bytestring
+    , bcc-addresses
+    , bcc-api
+    , bcc-binary
+    , bcc-crypto
+    , bcc-numeric
+    , bcc-ledger-core
+    , bcc-slotting
+    , cborg
+    , containers
+    , contra-tracer
+    , cryptonite
+    , data-default
+    , deepseq
+    , digest
+    , directory
+    , either
+    , errors
+    , exact-combinatorics
+    , exceptions
+    , extra
+    , fast-logger
+    , file-embed
+    , filepath
+    , fmt
+    , foldl
+    , generic-lens
+    , generic-arbitrary
+    , hashable
+    , http-api-data
+    , http-client
+    , http-client-tls
+    , http-media
+    , http-types
+    , io-classes
+    , tbco-monitoring
+    , lattices
+    , math-functions
+    , memory
+    , MonadRandom
+    , monad-logger
+    , mtl
+    , network
+    , network-uri
+    , nothunks
+    , ntp-client
+    , OddWord
+    , shardagnostic-consensus
+    , shardagnostic-network
+    , path-pieces
+    , persistent >=2.13 && <2.14
+    , persistent-sqlite >=2.13 && <2.14
+    , persistent-template >=2.12 && <2.13
+    , pretty-simple
+    , profunctors
+    , quiet
+    , random
+    , random-shuffle
+    , resource-pool
+    , retry
+    , safe
+    , scientific
+    , scrypt
+    , servant
+    , servant-client
+    , servant-server
+    , split
+    , splitmix
+    , statistics
+    , streaming-commons
+    , strict-non-empty-containers
+    , string-interpolate
+    , template-haskell
+    , text
+    , text-class
+    , time
+    , tls
+    , tracer-transformers
+    , transformers
+    , typed-protocols
+    , unliftio
+    , unliftio-core
+    , unordered-containers
+    , vector
+    , wai
+    , warp
+    , warp-tls
+    , x509
+    , x509-store
+    , x509-validation
+    , Win32-network
+    -- TODO:
+    --
+    -- Move all test-related code out of the main library and into a dedicated
+    -- testing library.
+    --
+    -- The following imports are currently necessary to define generators and
+    -- shrinkers that can be imported by both the `bcc-wallet-core` and
+    -- `bcc-wallet` libraries:
+    --
+    , QuickCheck
+    , bcc-wallet-test-utils
+  hs-source-dirs:
+      src
+  exposed-modules:
+      Bcc.Cole.Codec.Cbor
+      Bcc.DB.Sqlite
+      Bcc.DB.Sqlite.Delete
+      Bcc.Pool.DB
+      Bcc.Pool.DB.Log
+      Bcc.Pool.DB.MVar
+      Bcc.Pool.DB.Model
+      Bcc.Pool.DB.Sqlite
+      Bcc.Pool.DB.Sqlite.TH
+      Bcc.Pool.Metadata
+      Bcc.Wallet
+      Bcc.Wallet.Api
+      Bcc.Wallet.Api.Client
+      Bcc.Wallet.Api.Link
+      Bcc.Wallet.Api.Server
+      Bcc.Wallet.Api.Server.Tls
+      Bcc.Wallet.Api.Types
+      Bcc.Wallet.Compat
+      Bcc.Wallet.DB
+      Bcc.Wallet.DB.MVar
+      Bcc.Wallet.DB.Model
+      Bcc.Wallet.DB.Sqlite
+      Bcc.Wallet.DB.Sqlite.TH
+      Bcc.Wallet.DB.Sqlite.Types
+      Bcc.Wallet.Logging
+      Bcc.Wallet.Network
+      Bcc.Wallet.Network.Ports
+      Bcc.Wallet.Orphans
+      Bcc.Wallet.TokenMetadata
+      Bcc.Wallet.Primitive.AddressDerivation
+      Bcc.Wallet.Primitive.AddressDerivation.Cole
+      Bcc.Wallet.Primitive.AddressDerivation.Icarus
+      Bcc.Wallet.Primitive.AddressDerivation.MintBurn
+      Bcc.Wallet.Primitive.AddressDerivation.Shared
+      Bcc.Wallet.Primitive.AddressDerivation.SharedKey
+      Bcc.Wallet.Primitive.AddressDerivation.Sophie
+      Bcc.Wallet.Primitive.AddressDiscovery
+      Bcc.Wallet.Primitive.Slotting
+      Bcc.Wallet.Primitive.AddressDiscovery.Random
+      Bcc.Wallet.Primitive.Delegation.State
+      Bcc.Wallet.Primitive.AddressDiscovery.Sequential
+      Bcc.Wallet.Primitive.AddressDiscovery.Shared
+      Bcc.Wallet.Primitive.SyncProgress
+      Bcc.Wallet.Primitive.CoinSelection
+      Bcc.Wallet.Primitive.CoinSelection.Balance
+      Bcc.Wallet.Primitive.CoinSelection.Collateral
+      Bcc.Wallet.Primitive.Collateral
+      Bcc.Wallet.Primitive.Delegation.UTxO
+      Bcc.Wallet.Primitive.Migration
+      Bcc.Wallet.Primitive.Migration.Planning
+      Bcc.Wallet.Primitive.Migration.Selection
+      Bcc.Wallet.Primitive.Model
+      Bcc.Wallet.Primitive.Types
+      Bcc.Wallet.Primitive.Types.Address
+      Bcc.Wallet.Primitive.Types.Coin
+      Bcc.Wallet.Primitive.Types.Hash
+      Bcc.Wallet.Primitive.Types.RewardAccount
+      Bcc.Wallet.Primitive.Types.TokenBundle
+      Bcc.Wallet.Primitive.Types.TokenMap
+      Bcc.Wallet.Primitive.Types.TokenPolicy
+      Bcc.Wallet.Primitive.Types.TokenQuantity
+      Bcc.Wallet.Primitive.Types.Tx
+      Bcc.Wallet.Primitive.Types.UTxO
+      Bcc.Wallet.Primitive.Types.UTxOIndex
+      Bcc.Wallet.Primitive.Types.UTxOIndex.Internal
+      Bcc.Wallet.Primitive.Types.UTxOSelection
+      Bcc.Wallet.Registry
+      Bcc.Wallet.TokenMetadata.MockServer
+      Bcc.Wallet.Transaction
+      Bcc.Wallet.Unsafe
+      Bcc.Wallet.Util
+      Bcc.Wallet.Version
+      Bcc.Wallet.Version.TH
+      Control.Concurrent.Concierge
+      Crypto.Hash.Utils
+      Data.Function.Utils
+      Data.Time.Text
+      Data.Time.Utils
+      Data.Quantity
+      Data.Vector.Shuffle
+      Network.Ntp
+      Network.Wai.Middleware.ServerError
+      Network.Wai.Middleware.Logging
+      Shardagnostic.Network.Client.Wallet
+      UnliftIO.Compat
+        -- TODO:
+        --
+        -- Move all test-related code out of the main library and into a
+        -- dedicated testing library.
+        --
+        -- The following modules define QC generators and shrinkers that can
+        -- be used by both `bcc-wallet-core` and `bcc-wallet`:
+        --
+      Bcc.Wallet.Primitive.CoinSelection.Gen
+      Bcc.Wallet.Primitive.Types.Address.Gen
+      Bcc.Wallet.Primitive.Types.Coin.Gen
+      Bcc.Wallet.Primitive.Types.RewardAccount.Gen
+      Bcc.Wallet.Primitive.Types.TokenBundle.Gen
+      Bcc.Wallet.Primitive.Types.TokenMap.Gen
+      Bcc.Wallet.Primitive.Types.TokenPolicy.Gen
+      Bcc.Wallet.Primitive.Types.TokenQuantity.Gen
+      Bcc.Wallet.Primitive.Types.Tx.Gen
+      Bcc.Wallet.Primitive.Types.UTxO.Gen
+      Bcc.Wallet.Primitive.Types.UTxOIndex.Gen
+      Bcc.Wallet.Primitive.Types.UTxOSelection.Gen
+      Bcc.Wallet.Gen
+  other-modules:
+      Paths_bcc_wallet_core
+
+test-suite unit
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+      "-with-rtsopts=-M2G"
+      "-with-rtsopts=-N4"
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , aeson
+    , aeson-qq
+    , base58-bytestring
+    , binary
+    , bytestring
+    , bcc-addresses
+    , bcc-api
+    , bcc-binary
+    , bcc-crypto
+    , bcc-crypto-class
+    , bcc-numeric
+    , bcc-ledger-cole
+    , bcc-ledger-cole-test
+    , bcc-ledger-core
+    , bcc-wallet-core
+    , bcc-wallet-launcher
+    , bcc-wallet-test-utils
+    , bcc-sl-x509
+    , bcc-slotting
+    , cborg
+    , connection
+    , containers
+    , contra-tracer
+    , cryptonite
+    , data-default
+    , directory
+    , deepseq
+    , extra >= 1.6.17
+    , file-embed
+    , filepath
+    , fmt
+    , foldl
+    , generic-arbitrary
+    , generic-lens
+    , hedgehog-quickcheck
+    , hspec >= 2.8.2
+    , hspec-core >= 2.8.2
+    , http-api-data
+    , http-client
+    , http-client-tls
+    , http-media
+    , http-types
+    , tbco-monitoring
+    , io-classes
+    , io-sim
+    , lattices
+    , lens
+    , memory
+    , MonadRandom
+    , network
+    , network-uri
+    , nothunks
+    , persistent
+    , pretty-simple
+    , regex-pcre-builtin
+    , OddWord
+    , shardagnostic-consensus
+    , QuickCheck
+    , quickcheck-classes
+    , quickcheck-state-machine >= 0.6.0
+    , quiet
+    , random
+    , retry
+    , safe
+    , scrypt
+    , servant
+    , servant-server
+    , sophie-spec-ledger-test
+    , should-not-typecheck
+    , splitmix
+    , strict-non-empty-containers
+    , openapi3 >= 3.0.0.1 && < 3.2.0
+    , servant-openapi3
+    , string-qq
+    , temporary
+    , text
+    , text-class
+    , tls
+    , time
+    , transformers
+    , tree-diff
+    , unliftio
+    , unliftio-core
+    , unordered-containers
+    , x509
+    , x509-store
+    , yaml
+    , wai
+    , wai-extra
+    , warp
+  build-tools:
+      hspec-discover
+  type:
+      exitcode-stdio-1.0
+  hs-source-dirs:
+      test/unit
+      test/shared
+  main-is:
+      Main.hs
+  other-modules:
+      Bcc.Cole.Codec.CborSpec
+      Bcc.DB.Sqlite.DeleteSpec
+      Bcc.Pool.DB.Arbitrary
+      Bcc.Pool.DB.MVarSpec
+      Bcc.Pool.DB.Properties
+      Bcc.Pool.DB.SqliteSpec
+      Bcc.Wallet.Api.Malformed
+      Bcc.Wallet.Api.Server.TlsSpec
+      Bcc.Wallet.Api.ServerSpec
+      Bcc.Wallet.Api.TypesSpec
+      Bcc.Wallet.ApiSpec
+      Bcc.Wallet.DB.Arbitrary
+      Bcc.Wallet.DB.MVarSpec
+      Bcc.Wallet.DB.Properties
+      Bcc.Wallet.DB.SqliteSpec
+      Bcc.Wallet.DB.Sqlite.TypesSpec
+      Bcc.Wallet.DB.StateMachine
+      Bcc.Wallet.DummyTarget.Primitive.Types
+      Bcc.Wallet.Network.PortsSpec
+      Bcc.Wallet.NetworkSpec
+      Bcc.Wallet.Primitive.AddressDerivation.ColeSpec
+      Bcc.Wallet.Primitive.AddressDerivation.IcarusSpec
+      Bcc.Wallet.Primitive.AddressDerivation.MintBurnSpec
+      Bcc.Wallet.Primitive.AddressDerivationSpec
+      Bcc.Wallet.Primitive.AddressDiscovery.RandomSpec
+      Bcc.Wallet.Primitive.AddressDiscovery.SequentialSpec
+      Bcc.Wallet.Primitive.AddressDiscovery.SharedSpec
+      Bcc.Wallet.Primitive.Delegation.StateSpec
+      Bcc.Wallet.Primitive.AddressDiscoverySpec
+      Bcc.Wallet.Primitive.CoinSelection.BalanceSpec
+      Bcc.Wallet.Primitive.CoinSelection.CollateralSpec
+      Bcc.Wallet.Primitive.CollateralSpec
+      Bcc.Wallet.Primitive.MigrationSpec
+      Bcc.Wallet.Primitive.Migration.PlanningSpec
+      Bcc.Wallet.Primitive.Migration.SelectionSpec
+      Bcc.Wallet.Primitive.ModelSpec
+      Bcc.Wallet.Primitive.Slotting.Legacy
+      Bcc.Wallet.Primitive.SlottingSpec
+      Bcc.Wallet.Primitive.SyncProgressSpec
+      Bcc.Wallet.Primitive.Types.AddressSpec
+      Bcc.Wallet.Primitive.Types.CoinSpec
+      Bcc.Wallet.Primitive.Types.HashSpec
+      Bcc.Wallet.Primitive.Types.TokenBundleSpec
+      Bcc.Wallet.Primitive.Types.TokenMapSpec
+      Bcc.Wallet.Primitive.Types.TokenMapSpec.TypeErrorSpec
+      Bcc.Wallet.Primitive.Types.TokenPolicySpec
+      Bcc.Wallet.Primitive.Types.TokenQuantitySpec
+      Bcc.Wallet.Primitive.Types.TxSpec
+      Bcc.Wallet.Primitive.Types.UTxOSpec
+      Bcc.Wallet.Primitive.Types.UTxOIndexSpec
+      Bcc.Wallet.Primitive.Types.UTxOIndex.TypeErrorSpec
+      Bcc.Wallet.Primitive.Types.UTxOSelectionSpec
+      Bcc.Wallet.Primitive.Types.UTxOSelectionSpec.TypeErrorSpec
+      Bcc.Wallet.Primitive.TypesSpec
+      Bcc.Wallet.TokenMetadataSpec
+      Bcc.Wallet.RegistrySpec
+      Bcc.Wallet.TransactionSpec
+      Bcc.WalletSpec
+      Control.Concurrent.ConciergeSpec
+      Data.Function.UtilsSpec
+      Data.QuantitySpec
+      Data.Time.TextSpec
+      Data.Time.UtilsSpec
+      Data.Vector.ShuffleSpec
+      Network.Wai.Middleware.LoggingSpec
+      Spec
+
+benchmark db
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -threaded -rtsopts
+      -Wall
+  if (flag(release))
+    ghc-options: -O2 -Werror
+  build-depends:
+      base
+    , bytestring
+    , bcc-addresses
+    , bcc-crypto
+    , bcc-wallet-core
+    , bcc-wallet-launcher
+    , bcc-wallet-test-utils
+    , containers
+    , contra-tracer
+    , criterion
+    , cryptonite
+    , deepseq
+    , directory
+    , filepath
+    , fmt
+    , tbco-monitoring
+    , memory
+    , random
+    , text
+    , text-class
+    , time
+    , transformers
+    , unliftio
+  type:
+     exitcode-stdio-1.0
+  hs-source-dirs:
+      test/bench/db
+      test/shared
+  main-is:
+      Main.hs
+  other-modules:
+      Bcc.Wallet.DummyTarget.Primitive.Types

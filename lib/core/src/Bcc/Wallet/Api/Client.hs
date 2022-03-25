@@ -1,0 +1,460 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
+
+-- |
+-- Copyright: © 2021-2022 TBCO
+-- License: Apache-2.0
+--
+-- This module provides a half-typed Servant client for the bcc-wallet V2 API.
+--
+-- The functions in this module can be run with "Servant.Client.runClientM".
+
+module Bcc.Wallet.Api.Client
+    ( -- * API Clients
+      WalletClient (..)
+    , walletClient
+    , coleWalletClient
+
+    , TransactionClient (..)
+    , transactionClient
+    , coleTransactionClient
+
+    , AddressClient (..)
+    , addressClient
+    , coleAddressClient
+
+    , StakePoolClient (..)
+    , stakePoolClient
+
+    , NetworkClient (..)
+    , networkClient
+    ) where
+
+import Prelude
+
+import Bcc.Wallet.Api
+    ( Addresses
+    , ColeAddresses
+    , ColeTransactions
+    , ColeWallets
+    , Network
+    , PostData
+    , Proxy_
+    , SophieTransactions
+    , StakePools
+    , Wallets
+    )
+import Bcc.Wallet.Api.Types
+    ( ApiAddressIdT
+    , ApiAddressInspect (..)
+    , ApiAddressInspectData (..)
+    , ApiAddressT
+    , ApiBalanceTransactionPostDataT
+    , ApiColeWallet
+    , ApiBytesT (..)
+    , ApiCoinSelectionT
+    , ApiConstructTransactionDataT
+    , ApiConstructTransactionT
+    , ApiFee
+    , ApiNetworkClock
+    , ApiNetworkInformation (..)
+    , ApiNetworkParameters
+    , ApiPoolId
+    , ApiPostRandomAddressData
+    , ApiPutAddressesDataT
+    , ApiSelectCoinsDataT
+    , ApiSignTransactionPostData
+    , ApiSignedTransaction (..)
+    , ApiStakeKeysT
+    , ApiT (..)
+    , ApiTransactionT
+    , ApiTxId (..)
+    , ApiUtxoStatistics
+    , ApiWallet (..)
+    , ApiWalletPassphrase
+    , ApiWalletUtxoSnapshot (..)
+    , Base (Base64)
+    , ColeWalletPutPassphraseData (..)
+    , Iso8601Time (..)
+    , PostTransactionFeeOldDataT
+    , PostTransactionOldDataT
+    , WalletPutData (..)
+    , WalletPutPassphraseData (..)
+    )
+import Bcc.Wallet.Primitive.Types
+    ( SortOrder, WalletId )
+import Bcc.Wallet.Primitive.Types.Address
+    ( AddressState )
+import Bcc.Wallet.Primitive.Types.Coin
+    ( Coin (..) )
+import Bcc.Wallet.Primitive.Types.Tx
+    ( SealedTx, SerialisedTx (..), unsafeSealedTxFromBytes )
+import Control.Monad
+    ( void )
+import Data.Coerce
+    ( coerce )
+import Data.Generics.Internal.VL.Lens
+    ( view, (^.) )
+import Data.Generics.Labels
+    ()
+import Data.Proxy
+    ( Proxy (..) )
+import Data.Text
+    ( Text )
+import Servant
+    ( (:<|>) (..), (:>), NoContent )
+import Servant.Client
+    ( ClientM, client )
+import UnliftIO.Exception
+    ( throwString )
+
+import qualified Data.Aeson as Aeson
+
+{-------------------------------------------------------------------------------
+                              Server Interaction
+-------------------------------------------------------------------------------}
+
+-- | This data type encapsulates the client functions for all endpoints of the
+-- bcc-wallet V2 API.
+data WalletClient wallet = WalletClient
+    { deleteWallet
+        :: ApiT WalletId
+        -> ClientM ()
+    , getWallet
+        :: ApiT WalletId
+        -> ClientM wallet
+    , getWalletUtxoStatistics
+        :: ApiT WalletId
+        -> ClientM ApiUtxoStatistics
+    , getWalletUtxoSnapshot
+        :: ApiT WalletId
+        -> ClientM ApiWalletUtxoSnapshot
+    , listWallets
+        :: ClientM [wallet]
+    , postWallet
+        :: PostData wallet
+        -> ClientM wallet
+    , putWallet
+        :: ApiT WalletId
+        -> WalletPutData
+        -> ClientM wallet
+    , putWalletPassphrase
+        :: ApiT WalletId
+        -> WalletPutPassphraseData
+        -> ClientM NoContent
+    }
+
+data TransactionClient = TransactionClient
+    { listTransactions
+        :: ApiT WalletId
+        -> Maybe Iso8601Time
+        -> Maybe Iso8601Time
+        -> Maybe (ApiT SortOrder)
+        -> ClientM [ApiTransactionT Aeson.Value]
+    , signTransaction
+        :: ApiT WalletId
+        -> ApiSignTransactionPostData
+        -> ClientM ApiSignedTransaction
+    , postTransaction
+        :: ApiT WalletId
+        -> PostTransactionOldDataT Aeson.Value
+        -> ClientM (ApiTransactionT Aeson.Value)
+    , postTransactionFee
+        :: ApiT WalletId
+        -> PostTransactionFeeOldDataT Aeson.Value
+        -> ClientM ApiFee
+    , postExternalTransaction
+        :: ApiBytesT 'Base64 SerialisedTx
+        -> ClientM ApiTxId
+    , deleteTransaction
+        :: ApiT WalletId
+        -> ApiTxId
+        -> ClientM NoContent
+    , getTransaction
+        :: ApiT WalletId
+        -> ApiTxId
+        -> ClientM (ApiTransactionT Aeson.Value)
+    , constructTransaction
+        :: ApiT WalletId
+        -> ApiConstructTransactionDataT Aeson.Value
+        -> ClientM (ApiConstructTransactionT Aeson.Value)
+    , balanceTransaction
+        :: ApiT WalletId
+        -> ApiBalanceTransactionPostDataT Aeson.Value
+        -> ClientM (ApiConstructTransactionT Aeson.Value)
+    }
+
+data AddressClient = AddressClient
+    { listAddresses
+        :: ApiT WalletId
+        -> Maybe (ApiT AddressState)
+        -> ClientM [Aeson.Value]
+    , inspectAddress
+        :: Text
+        -> ClientM Aeson.Value
+    , postRandomAddress
+        :: ApiT WalletId
+        -> ApiPostRandomAddressData
+        -> ClientM (ApiAddressT Aeson.Value)
+    , putRandomAddress
+        :: ApiT WalletId
+        -> ApiAddressIdT Aeson.Value
+        -> ClientM NoContent
+    , putRandomAddresses
+        :: ApiT WalletId
+        -> ApiPutAddressesDataT Aeson.Value
+        -> ClientM NoContent
+    }
+
+data StakePoolClient apiPool = StakePoolClient
+    { listPools
+        :: Maybe (ApiT Coin) -> ClientM [apiPool]
+    , joinStakePool
+        :: ApiPoolId
+        -> ApiT WalletId
+        -> ApiWalletPassphrase
+        -> ClientM (ApiTransactionT Aeson.Value)
+    , quitStakePool
+        :: ApiT WalletId
+        -> ApiWalletPassphrase
+        -> ClientM (ApiTransactionT Aeson.Value)
+    }
+
+
+data NetworkClient = NetworkClient
+    { networkInformation
+        :: ClientM ApiNetworkInformation
+    , networkParameters
+        :: ClientM ApiNetworkParameters
+    , networkClock
+        :: Bool -- When 'True', block and force NTP check
+        -> ClientM ApiNetworkClock
+    }
+
+-- | Produces a 'WalletClient' working against the /wallets API.
+walletClient :: WalletClient ApiWallet
+walletClient =
+    let
+        _deleteWallet
+            :<|> _getWallet
+            :<|> _listWallets
+            :<|> _postWallet
+            :<|> _putWallet
+            :<|> _putWalletPassphrase
+            :<|> _getWalletUtxoSnapshot
+            :<|> _getWalletUtxoStatistics
+            = client (Proxy @("v2" :> Wallets))
+    in
+        WalletClient
+            { deleteWallet = void . _deleteWallet
+            , getWallet = _getWallet
+            , listWallets = _listWallets
+            , postWallet = _postWallet
+            , putWallet = _putWallet
+            , putWalletPassphrase = _putWalletPassphrase
+            , getWalletUtxoSnapshot = _getWalletUtxoSnapshot
+            , getWalletUtxoStatistics = _getWalletUtxoStatistics
+            }
+
+-- | Produces a 'WalletClient' working against the /wallets API.
+coleWalletClient :: WalletClient ApiColeWallet
+coleWalletClient =
+    let
+        _postWallet
+            :<|> _deleteWallet
+            :<|> _getWallet
+            :<|> _listWallets
+            :<|> _putWallet
+            :<|> _getWalletUtxoSnapshot
+            :<|> _getWalletUtxoStatistics
+            :<|> _putWalletPassphrase
+            = client (Proxy @("v2" :> ColeWallets))
+    in
+        WalletClient
+            { deleteWallet = void . _deleteWallet
+            , getWallet = _getWallet
+            , listWallets = _listWallets
+            , postWallet = _postWallet
+            , putWallet = _putWallet
+            , putWalletPassphrase = \wid req ->
+                _putWalletPassphrase wid $ ColeWalletPutPassphraseData
+                    { oldPassphrase = Just $ coerce <$> req ^. #oldPassphrase
+                    , newPassphrase = req ^. #newPassphrase
+                    }
+            , getWalletUtxoSnapshot = _getWalletUtxoSnapshot
+            , getWalletUtxoStatistics = _getWalletUtxoStatistics
+            }
+
+-- | Produces a 'TransactionClient t' working against the /wallets API.
+transactionClient
+    :: TransactionClient
+transactionClient =
+    let
+        _constructTransaction
+            :<|> _signTransaction
+            :<|> _listTransactions
+            :<|> _getTransaction
+            :<|> _deleteTransaction
+            :<|> _postTransaction
+            :<|> _postTransactionFee
+            :<|> _balanceTransaction
+            = client (Proxy @("v2" :> (SophieTransactions Aeson.Value)))
+
+        _postExternalTransaction
+            = client (Proxy @("v2" :> Proxy_))
+    in
+        TransactionClient
+            { listTransactions = (`_listTransactions` Nothing)
+            , signTransaction = _signTransaction
+            , postTransaction = _postTransaction
+            , postTransactionFee = _postTransactionFee
+            , postExternalTransaction = _postExternalTransaction . fromSerialisedTx
+            , deleteTransaction = _deleteTransaction
+            , getTransaction = _getTransaction
+            , constructTransaction = _constructTransaction
+            , balanceTransaction = _balanceTransaction
+            }
+
+fromSerialisedTx :: ApiBytesT base SerialisedTx -> ApiT SealedTx
+fromSerialisedTx = ApiT . unsafeSealedTxFromBytes . view (#getApiBytesT . #payload)
+
+-- | Produces a 'TransactionClient n' working against the /cole-wallets API.
+coleTransactionClient
+    :: TransactionClient
+coleTransactionClient =
+    let
+        _constructTransaction
+            :<|> _signTransaction
+            :<|> _listTransactions
+            :<|> _getTransaction
+            :<|> _deleteTransaction
+            :<|> _postTransaction
+            :<|> _postTransactionFee
+            = client (Proxy @("v2" :> (ColeTransactions Aeson.Value)))
+
+        _postExternalTransaction
+            = client (Proxy @("v2" :> Proxy_))
+
+    in TransactionClient
+        { listTransactions = _listTransactions
+        , signTransaction = _signTransaction
+        , postTransaction = _postTransaction
+        , postTransactionFee = _postTransactionFee
+        , postExternalTransaction = _postExternalTransaction . fromSerialisedTx
+        , deleteTransaction = _deleteTransaction
+        , getTransaction = _getTransaction
+        , constructTransaction = _constructTransaction
+        , balanceTransaction = error "balance transaction endpoint not supported for cole"
+        }
+
+-- | Produces an 'AddressClient n' working against the /wallets API
+addressClient
+    :: AddressClient
+addressClient =
+    let
+        _listAddresses
+            :<|> _inspectAddress
+            :<|> _postScriptAddress
+            = client (Proxy @("v2" :> Addresses Aeson.Value))
+    in
+        AddressClient
+            { listAddresses = _listAddresses
+            , inspectAddress =
+                fmap unApiAddressInspect
+                . _inspectAddress
+                . ApiAddressInspectData
+            , postRandomAddress = \_ _ -> throwString "feature unavailable."
+            , putRandomAddress  = \_ _ -> throwString "feature unavailable."
+            , putRandomAddresses = \_ _ -> throwString "feature unavailable."
+            }
+
+-- | Produces an 'AddressClient n' working against the /wallets API
+coleAddressClient
+    :: AddressClient
+coleAddressClient =
+    let
+        _ :<|> _inspectAddress
+          :<|> _postScriptAddress
+            = client (Proxy @("v2" :> Addresses Aeson.Value))
+
+        _postRandomAddress
+            :<|> _putRandomAddress
+            :<|> _putRandomAddresses
+            :<|> _listAddresses
+            = client (Proxy @("v2" :> ColeAddresses Aeson.Value))
+    in
+        AddressClient
+            { listAddresses = _listAddresses
+            , inspectAddress =
+                fmap unApiAddressInspect
+                . _inspectAddress
+                . ApiAddressInspectData
+            , postRandomAddress = _postRandomAddress
+            , putRandomAddress = _putRandomAddress
+            , putRandomAddresses = _putRandomAddresses
+            }
+
+-- | Produces an 'StakePoolsClient n' working against the /stake-pools API
+stakePoolClient
+    :: forall apiPool. Aeson.FromJSON apiPool => StakePoolClient apiPool
+stakePoolClient =
+    let
+        _listPools
+            :<|> _joinStakePool
+            :<|> _quitStakePool
+            :<|> _delegationFee
+            :<|> _listStakeKeys
+            :<|> _postPoolMaintenance
+            :<|> _getPoolMaintenance
+            = client (Proxy @("v2" :> StakePools Aeson.Value apiPool))
+    in
+        StakePoolClient
+            { listPools = _listPools
+            , joinStakePool = _joinStakePool
+            , quitStakePool = _quitStakePool
+            }
+
+-- | Produces a 'NetworkClient'
+networkClient
+    :: NetworkClient
+networkClient =
+    let
+        _networkInformation
+            :<|> _networkParameters
+            :<|> _networkClock
+            = client (Proxy @("v2" :> Network))
+    in
+        NetworkClient
+            { networkInformation = _networkInformation
+            , networkParameters = _networkParameters
+            , networkClock = _networkClock
+            }
+
+--
+-- Type families
+--
+
+type instance ApiAddressT Aeson.Value = Aeson.Value
+type instance ApiStakeKeysT Aeson.Value = Aeson.Value
+type instance ApiAddressIdT Aeson.Value = Text
+type instance ApiCoinSelectionT Aeson.Value = Aeson.Value
+type instance ApiSelectCoinsDataT Aeson.Value = Aeson.Value
+type instance ApiTransactionT Aeson.Value = Aeson.Value
+type instance ApiConstructTransactionT Aeson.Value = Aeson.Value
+type instance ApiConstructTransactionDataT Aeson.Value = Aeson.Value
+type instance PostTransactionOldDataT Aeson.Value = Aeson.Value
+type instance PostTransactionFeeOldDataT Aeson.Value = Aeson.Value
+type instance ApiPutAddressesDataT Aeson.Value = Aeson.Value
+type instance ApiBalanceTransactionPostDataT Aeson.Value = Aeson.Value

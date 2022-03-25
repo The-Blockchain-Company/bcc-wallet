@@ -1,0 +1,119 @@
+name:                bcc-wallet-core-integration
+version:             2021.9.29
+synopsis:            Core integration test library.
+description:         Shared core functionality for our integration test suites.
+homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
+author:              IOHK Engineering Team
+maintainer:          operations@tbco.io
+copyright:           2021-2022 TBCO
+license:             Apache-2.0
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+
+flag release
+    description: Enable optimization and `-Werror`
+    default: False
+    manual: True
+
+library
+  default-language:
+      Haskell2010
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+  ghc-options:
+      -Wall
+      -Wcompat
+  if (flag(release))
+    ghc-options:
+      -Werror
+  build-depends:
+      HUnit
+    , aeson
+    , aeson-qq
+    , base
+    , base58-bytestring
+    , bech32
+    , bytestring
+    , bcc-addresses
+    , bcc-crypto
+    , bcc-wallet-cli
+    , bcc-wallet-core
+    , bcc-wallet-launcher
+    , bcc-wallet-test-utils
+    , cborg
+    , command
+    , containers
+    , criterion-measurement
+    , cryptonite
+    , deepseq
+    , directory
+    , either
+    , extra
+    , filepath
+    , fmt
+    , generic-lens
+    , generic-lens-core
+    , hspec
+    , hspec-expectations-lifted
+    , http-api-data
+    , http-client
+    , http-types
+    , tbco-monitoring
+    , lens-aeson
+    , memory
+    , network-uri
+    , optparse-applicative
+    , process
+    , resourcet
+    , retry
+    , say
+    , scrypt
+    , template-haskell
+    , text
+    , text-class
+    , time
+    , unliftio
+    , unliftio-core
+    , unordered-containers
+  hs-source-dirs:
+      src
+  exposed-modules:
+      Test.Integration.Faucet
+      Test.Integration.Framework.Context
+      Test.Integration.Framework.DSL
+      Test.Integration.Framework.Request
+      Test.Integration.Framework.TestData
+      Test.Integration.Scenario.API.Cole.Wallets
+      Test.Integration.Scenario.API.Cole.HWWallets
+      Test.Integration.Scenario.API.Cole.Addresses
+      Test.Integration.Scenario.API.Cole.CoinSelections
+      Test.Integration.Scenario.API.Cole.Transactions
+      Test.Integration.Scenario.API.Cole.TransactionsNew
+      Test.Integration.Scenario.API.Cole.Migrations
+      Test.Integration.Scenario.API.Cole.Network
+      Test.Integration.Scenario.API.Sophie.Addresses
+      Test.Integration.Scenario.API.Sophie.CoinSelections
+      Test.Integration.Scenario.API.Sophie.HWWallets
+      Test.Integration.Scenario.API.Sophie.Network
+      Test.Integration.Scenario.API.Sophie.Settings
+      Test.Integration.Scenario.API.Sophie.StakePools
+      Test.Integration.Scenario.API.Sophie.Transactions
+      Test.Integration.Scenario.API.Sophie.TransactionsNew
+      Test.Integration.Scenario.API.Sophie.Migrations
+      Test.Integration.Scenario.API.Sophie.Wallets
+      Test.Integration.Scenario.API.Shared.Wallets
+      Test.Integration.Scenario.API.Shared.Addresses
+      Test.Integration.Scenario.API.Network
+      Test.Integration.Scenario.CLI.Cole.Wallets
+      Test.Integration.Scenario.CLI.Cole.Addresses
+      Test.Integration.Scenario.CLI.Sophie.Addresses
+      Test.Integration.Scenario.CLI.Sophie.HWWallets
+      Test.Integration.Scenario.CLI.Sophie.Transactions
+      Test.Integration.Scenario.CLI.Sophie.Wallets
+      Test.Integration.Scenario.CLI.Miscellaneous
+      Test.Integration.Scenario.CLI.Network
+      Test.Integration.Scenario.CLI.Port
+      Bcc.Wallet.LatencyBenchShared
+      Bcc.Wallet.BenchShared

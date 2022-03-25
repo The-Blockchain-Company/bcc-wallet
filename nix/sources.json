@@ -1,0 +1,39 @@
+{
+    "haskell.nix": {
+        "branch": "master",
+        "description": "Alternative Haskell Infrastructure for Nixpkgs",
+        "homepage": "https://The-Blockchain-Company.github.io/haskell.nix",
+        "owner": "The-Blockchain-Company",
+        "repo": "haskell.nix",
+        "rev": "40c97135df2d83ac0d5531a32028d23eca6d130e",
+        "sha256": "1x6fayd88binak0c6z8d360wdnnj2dqxqg7lhdg7b7y6blpdyxli",
+        "type": "tarball",
+        "url": "https://github.com/The-Blockchain-Company/haskell.nix/archive/40c97135df2d83ac0d5531a32028d23eca6d130e.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "tbco-nix": {
+        "branch": "master",
+        "description": "nix scripts shared across projects",
+        "homepage": null,
+        "owner": "The-Blockchain-Company",
+        "repo": "tbco-nix",
+        "rev": "266ca46a8d1cb4286b9699b4fd435066e88440ac",
+        "sha256": "132fbnnpp7bbfqv3dgvn9xi9dc1gsn9mivbqnxmglgmlv4lmrad8",
+        "type": "tarball",
+        "url": "https://github.com/The-Blockchain-Company/tbco-nix/archive/266ca46a8d1cb4286b9699b4fd435066e88440ac.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "sphinxcontrib-haddock": {
+        "branch": "master",
+        "builtin": false,
+        "description": "Tools for using Haddock with Sphinx",
+        "homepage": null,
+        "owner": "michaelpj",
+        "repo": "sphinxcontrib-haddock",
+        "rev": "f3956b3256962b2d27d5a4e96edb7951acf5de34",
+        "sha256": "0mlxa5zzgdka0c6sj7pp4cfvc8rcrd8g2z2113vp614l43g17miv",
+        "type": "tarball",
+        "url": "https://github.com/michaelpj/sphinxcontrib-haddock/archive/f3956b3256962b2d27d5a4e96edb7951acf5de34.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

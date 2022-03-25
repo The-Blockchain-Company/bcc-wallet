@@ -1,0 +1,322 @@
+{
+    "seed": 7656127382344739251,
+    "samples": [
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 4,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 10,
+                            "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "entries": []
+        },
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 10,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 6,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 8,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 6,
+                            "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        },
+                        {
+                            "asset_name": "546f6b656e44",
+                            "quantity": 4,
+                            "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        },
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 1,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        },
+                        {
+                            "asset_name": "546f6b656e42",
+                            "quantity": 6,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        },
+                        {
+                            "asset_name": "546f6b656e44",
+                            "quantity": 1,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 5,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 8,
+                        "unit": "entropic"
+                    },
+                    "assets": []
+                },
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 10,
+                        "unit": "entropic"
+                    },
+                    "assets": []
+                }
+            ]
+        },
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 4,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 7,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 11,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        }
+                    ]
+                },
+                {
+                    "bcc_minimum": {
+                        "quantity": 9,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 10,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e42",
+                            "quantity": 1,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 2,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "asset_name": "546f6b656e44",
+                            "quantity": 4,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 7,
+                            "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        },
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 6,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        },
+                        {
+                            "asset_name": "546f6b656e42",
+                            "quantity": 8,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        },
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 19,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        },
+                        {
+                            "asset_name": "546f6b656e42",
+                            "quantity": 7,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        },
+                        {
+                            "asset_name": "546f6b656e44",
+                            "quantity": 17,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        }
+                    ]
+                },
+                {
+                    "bcc_minimum": {
+                        "quantity": 8,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 9,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 6,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        }
+                    ]
+                },
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 8,
+                        "unit": "entropic"
+                    },
+                    "assets": []
+                }
+            ]
+        },
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 5,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 5,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "entries": []
+        },
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 5,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 10,
+                        "unit": "entropic"
+                    },
+                    "assets": []
+                }
+            ]
+        },
+        {
+            "entries": []
+        },
+        {
+            "entries": [
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 4,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 9,
+                            "policy_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        },
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 10,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        }
+                    ]
+                },
+                {
+                    "bcc_minimum": {
+                        "quantity": 2,
+                        "unit": "entropic"
+                    },
+                    "bcc": {
+                        "quantity": 4,
+                        "unit": "entropic"
+                    },
+                    "assets": [
+                        {
+                            "asset_name": "546f6b656e44",
+                            "quantity": 7,
+                            "policy_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                        },
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 9,
+                            "policy_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                        },
+                        {
+                            "asset_name": "546f6b656e41",
+                            "quantity": 6,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        },
+                        {
+                            "asset_name": "546f6b656e42",
+                            "quantity": 10,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        },
+                        {
+                            "asset_name": "546f6b656e43",
+                            "quantity": 9,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        },
+                        {
+                            "asset_name": "546f6b656e44",
+                            "quantity": 10,
+                            "policy_id": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

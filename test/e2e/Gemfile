@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+
+gem 'bcc_wallet', '~> 0.3.11'
+# gem 'bcc_wallet', path: "~/wb/bcc_wallet"
+gem 'bip_mnemonic', '0.0.4'
+gem 'rake', '12.3.3'
+gem 'rspec', '3.10.0'

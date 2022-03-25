@@ -1,0 +1,417 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+
+module Test.Integration.Scenario.API.Cole.HWWallets
+    ( spec
+    ) where
+
+import Prelude
+
+import Bcc.Mnemonic
+    ( Mnemonic
+    , SomeMnemonic (..)
+    , entropyToMnemonic
+    , genEntropy
+    , mnemonicToText
+    )
+import Bcc.Wallet.Api.Types
+    ( AddressAmount (..)
+    , ApiAddress
+    , ApiColeWallet
+    , ApiCoinSelectionOutput (..)
+    , ApiFee
+    , ApiT (..)
+    , ApiTransaction
+    , ApiUtxoStatistics
+    , DecodeAddress
+    , DecodeStakeAddress
+    , EncodeAddress (..)
+    , WalletStyle (..)
+    )
+import Bcc.Wallet.Primitive.AddressDerivation
+    ( HardDerivation (..)
+    , PaymentAddress
+    , PersistPublicKey (..)
+    , WalletKey (..)
+    )
+import Bcc.Wallet.Primitive.AddressDerivation.Icarus
+    ( IcarusKey )
+import Bcc.Wallet.Primitive.AddressDiscovery.Sequential
+    ( defaultAddressPoolGap, getAddressPoolGap )
+import Bcc.Wallet.Primitive.Types.Address
+    ( AddressState (..) )
+import Control.Monad
+    ( forM_ )
+import Control.Monad.IO.Class
+    ( liftIO )
+import Control.Monad.Trans.Resource
+    ( runResourceT )
+import Data.Generics.Internal.VL.Lens
+    ( (^.) )
+import Data.Proxy
+    ( Proxy (..) )
+import Data.Quantity
+    ( Quantity (..) )
+import Data.Text
+    ( Text )
+import Test.Hspec
+    ( SpecWith, describe, pendingWith, shouldBe, shouldSatisfy )
+import Test.Hspec.Extra
+    ( it )
+import Test.Integration.Framework.DSL
+    ( Context (..)
+    , Headers (..)
+    , Payload (..)
+    , eventually
+    , expectErrorMessage
+    , expectField
+    , expectListField
+    , expectListSize
+    , expectResponseCode
+    , expectWalletUTxO
+    , fixtureIcarusWallet
+    , fixtureIcarusWalletMws
+    , fixturePassphrase
+    , getFromResponse
+    , icarusAddresses
+    , json
+    , minUTxOValue
+    , postColeWallet
+    , request
+    , restoreWalletFromPubKey
+    , selectCoins
+    , verify
+    , walletId
+    )
+import Test.Integration.Framework.TestData
+    ( errMsg403NoRootKey, updateNamePayload, updatePassPayload )
+
+import qualified Bcc.Wallet.Api.Link as Link
+import qualified Bcc.Wallet.Primitive.AddressDerivation.Icarus as Icarus
+import qualified Data.HashSet as Set
+import qualified Data.List.NonEmpty as NE
+import qualified Data.Text.Encoding as T
+import qualified Network.HTTP.Types.Status as HTTP
+
+spec :: forall n.
+    ( DecodeAddress n
+    , DecodeStakeAddress n
+    , EncodeAddress n
+    , PaymentAddress n IcarusKey
+    ) => SpecWith Context
+spec = describe "COLE_HW_WALLETS" $ do
+    it "HW_WALLETS_01 - Restoration from account public key preserves funds" $ \ctx -> runResourceT $ do
+        wSrc <- fixtureIcarusWallet ctx
+        -- create wallet
+        mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+        let mnemonicTxt = mnemonicToText @15 mnemonics
+        let payldCrt = Json [json| {
+            "name": "!st created",
+            "mnemonic_sentence": #{mnemonicTxt},
+            "passphrase": #{fixturePassphrase},
+            "style": "icarus"
+            }|]
+
+        rInit <- postColeWallet ctx payldCrt
+        verify rInit
+            [ expectResponseCode HTTP.status201
+            , expectField (#balance . #available) (`shouldBe` Quantity 0)
+            , expectField (#balance . #total) (`shouldBe` Quantity 0)
+            ]
+        let wDest = getFromResponse id rInit
+
+        --send funds
+        let [addr] = take 1 $ icarusAddresses @n mnemonics
+        let destination = encodeAddress @n addr
+        let minUTxOValue' = minUTxOValue (_mainEra ctx)
+        let payload = Json [json|{
+                "payments": [{
+                    "address": #{destination},
+                    "amount": {
+                        "quantity": #{minUTxOValue'},
+                        "unit": "entropic"
+                    }
+                }],
+                "passphrase": "bcc-wallet"
+            }|]
+        rTrans <- request @(ApiTransaction n) ctx
+            (Link.createTransactionOld @'Cole wSrc) Default payload
+        expectResponseCode HTTP.status202 rTrans
+
+        eventually "Wallet balance is as expected" $ do
+            rGet <- request @ApiColeWallet ctx
+                (Link.getWallet @'Cole wDest) Default Empty
+            verify rGet
+                [ expectField
+                        (#balance . #total) (`shouldBe` Quantity minUTxOValue')
+                , expectField
+                        (#balance . #available) (`shouldBe` Quantity minUTxOValue')
+                ]
+
+        -- delete wallet
+        rDel <-
+            request @ApiColeWallet ctx (Link.deleteWallet @'Cole wDest) Default Empty
+        expectResponseCode HTTP.status204 rDel
+
+        -- restore from account public key and make sure funds are there
+        let accXPub = pubKeyFromMnemonics mnemonics
+        wDest' <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx accXPub restoredWalletName
+
+        eventually "Balance of restored wallet is as expected" $ do
+            rGet <- request @ApiColeWallet ctx
+                (Link.getWallet @'Cole wDest') Default Empty
+            verify rGet
+                [ expectField
+                        (#balance . #total) (`shouldBe` Quantity minUTxOValue')
+                , expectField
+                        (#balance . #available) (`shouldBe` Quantity minUTxOValue')
+                ]
+
+    describe "HW_WALLETS_03 - Cannot do operations requiring private key" $ do
+        it "Cannot send tx" $ \ctx -> runResourceT $ do
+            (w, mnemonics) <- fixtureIcarusWalletMws ctx
+            let pubKey = pubKeyFromMnemonics mnemonics
+            r <- request @ApiColeWallet ctx (Link.deleteWallet @'Cole w) Default Empty
+            expectResponseCode HTTP.status204 r
+
+            wSrc <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+
+            let [addr] = take 1 $ icarusAddresses @n mnemonics
+            let destination = encodeAddress @n addr
+            let minUTxOValue' = minUTxOValue (_mainEra ctx)
+            let payload = Json [json|{
+                    "payments": [{
+                        "address": #{destination},
+                        "amount": {
+                            "quantity": #{minUTxOValue'},
+                            "unit": "entropic"
+                        }
+                    }],
+                    "passphrase": "bcc-wallet"
+                }|]
+            rTrans <- request @(ApiTransaction n) ctx
+                (Link.createTransactionOld @'Cole wSrc) Default payload
+            expectResponseCode HTTP.status403 rTrans
+            expectErrorMessage (errMsg403NoRootKey $ wSrc ^. walletId) rTrans
+
+        it "Cannot update pass" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wk <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+
+            -- cannot update pass
+            let payload = updatePassPayload fixturePassphrase "new-wallet-passphrase"
+            rup <- request @ApiColeWallet ctx
+                (Link.putWalletPassphrase @'Cole wk) Default payload
+            expectResponseCode HTTP.status403 rup
+            expectErrorMessage (errMsg403NoRootKey $ wk ^. walletId) rup
+
+    describe "HW_WALLETS_04 - Can manage HW wallet the same way as others" $ do
+        it "Can update name" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wk <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+
+            -- cannot update wallet name
+            let newName = "new name"
+            let payload = updateNamePayload newName
+            rup <- request @ApiColeWallet ctx (Link.putWallet @'Cole wk) Default payload
+            expectResponseCode HTTP.status200 rup
+
+            rGet <- request @ApiColeWallet ctx
+                (Link.getWallet @'Cole wk) Default Empty
+            expectField
+                (#name . #getApiT . #getWalletName)
+                (`shouldBe` newName)
+                rGet
+
+        it "Can get tx fee" $ \ctx -> runResourceT $ do
+            (w, mnemonics) <- fixtureIcarusWalletMws ctx
+            let pubKey = pubKeyFromMnemonics mnemonics
+            r <- request @ApiColeWallet ctx (Link.deleteWallet @'Cole w) Default Empty
+            expectResponseCode HTTP.status204 r
+
+            wSrc <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+
+            let [addr] = take 1 $ icarusAddresses @n mnemonics
+            let destination = encodeAddress @n addr
+            let minUTxOValue' = minUTxOValue (_mainEra ctx)
+            let payload = Json [json|{
+                    "payments": [{
+                        "address": #{destination},
+                        "amount": {
+                            "quantity": #{minUTxOValue'},
+                            "unit": "entropic"
+                        }
+                    }]
+                }|]
+
+            rFee <- request @ApiFee ctx
+                (Link.getTransactionFeeOld @'Cole wSrc) Default payload
+            expectResponseCode HTTP.status202 rFee
+
+        it "Can delete" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wPub <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+            r <- request @ApiColeWallet ctx
+                (Link.deleteWallet @'Cole wPub) Default Empty
+            expectResponseCode HTTP.status204 r
+
+        it "Can see utxo" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wPub <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+            rStat <- request @ApiUtxoStatistics ctx
+                (Link.getUTxOsStatistics @'Cole wPub) Default Empty
+            expectResponseCode HTTP.status200 rStat
+            expectWalletUTxO [] (snd rStat)
+
+        it "Can list addresses" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wPub <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+
+            let g = fromIntegral $ getAddressPoolGap defaultAddressPoolGap
+            r <- request @[ApiAddress n] ctx
+                (Link.listAddresses @'Cole wPub) Default Empty
+            expectResponseCode HTTP.status200 r
+            expectListSize g r
+            forM_ [0..(g-1)] $ \addrNum -> do
+                expectListField addrNum (#state . #getApiT) (`shouldBe` Unused) r
+
+        it "Can have address pool gap" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            let addrPoolGap = 55 --arbitraty but known
+            let payloadRestore = Json [json| {
+                    "name": #{restoredWalletName},
+                    "account_public_key": #{pubKey},
+                    "address_pool_gap": #{addrPoolGap}
+                }|]
+            rRestore <- postColeWallet ctx payloadRestore
+            expectResponseCode HTTP.status201 rRestore
+
+            let wPub = getFromResponse id rRestore
+
+            r <- request @[ApiAddress n] ctx
+                (Link.listAddresses @'Cole wPub) Default Empty
+            expectResponseCode HTTP.status200 r
+            expectListSize addrPoolGap r
+            forM_ [0..(addrPoolGap-1)] $ \addrNum -> do
+                expectListField addrNum (#state . #getApiT) (`shouldBe` Unused) r
+
+        it "Can list transactions" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wPub <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+
+            rt <- request @([ApiTransaction n]) ctx
+                (Link.listTransactions @'Cole wPub) Default Empty
+            expectResponseCode HTTP.status200 rt
+            expectListSize 0 rt
+
+        it "Can get coin selection" $ \ctx -> runResourceT $ do
+            (w, mnemonics) <- fixtureIcarusWalletMws ctx
+            let pubKey = pubKeyFromMnemonics mnemonics
+            r <- request
+                @ApiColeWallet ctx (Link.deleteWallet @'Cole w) Default Empty
+            expectResponseCode HTTP.status204 r
+
+            source <- restoreWalletFromPubKey
+                @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+            let paymentCount = 4
+            let targetAddresses = take paymentCount $
+                    (\a -> (ApiT a, Proxy @n)) <$>
+                    icarusAddresses @n mnemonics
+            let minUTxOValue' = minUTxOValue (_mainEra ctx)
+            let targetAmounts = take paymentCount $
+                    Quantity <$> [minUTxOValue' ..]
+            let targetAssets = repeat mempty
+            let payments = NE.fromList $ map ($ mempty) $
+                    zipWith AddressAmount targetAddresses targetAmounts
+            let outputs = zipWith3 ApiCoinSelectionOutput
+                    targetAddresses targetAmounts targetAssets
+            selectCoins @n @'Cole ctx source payments >>= flip verify
+                [ expectResponseCode HTTP.status200
+                , expectField #inputs
+                    (`shouldSatisfy` (not . null))
+                , expectField #outputs
+                    (`shouldSatisfy` ((Set.fromList outputs ==) . Set.fromList))
+                , expectField #change
+                    (`shouldSatisfy` (not . null))
+                ]
+
+    describe "HW_WALLETS_05 - Wallet from pubKey is available" $ do
+        it "Can get wallet" $ \ctx -> runResourceT $ do
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            wPub <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+            rGet <- request @ApiColeWallet ctx
+                (Link.getWallet @'Cole wPub) Default Empty
+            expectField
+                (#name . #getApiT . #getWalletName)
+                (`shouldBe` restoredWalletName)
+                rGet
+
+        it "Can list wallet" $ \ctx -> runResourceT $ do
+            liftIO $ pendingWith "TODO: appears to be flaky from time to time."
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let pubKey = pubKeyFromMnemonics mnemonics
+            _ <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx pubKey restoredWalletName
+            rl <- request @[ApiColeWallet] ctx
+                (Link.listWallets @'Cole) Default Empty
+            expectListField 0
+                (#name . #getApiT . #getWalletName)
+                (`shouldBe` restoredWalletName)
+                rl
+
+        it "The same account and mnemonic wallet can live side-by-side" $ \ctx -> runResourceT $ do
+            liftIO $ pendingWith "TODO: appears to flaky from time to time."
+            mnemonics <- liftIO $ entropyToMnemonic <$> genEntropy
+            let mnemonicsTxt = mnemonicToText @15 mnemonics
+
+            -- create mnemonic wallet
+            let mnemonicWalletName = "Mnemonic wallet"
+            let payldCrt = Json [json| {
+                "name": #{mnemonicWalletName},
+                "mnemonic_sentence": #{mnemonicsTxt},
+                "passphrase": #{fixturePassphrase},
+                "style": "icarus"
+                }|]
+            r <- postColeWallet ctx payldCrt
+            expectResponseCode HTTP.status201 r
+
+            -- create from account public key
+            let accXPub = pubKeyFromMnemonics mnemonics
+            _ <- restoreWalletFromPubKey @ApiColeWallet @'Cole ctx accXPub restoredWalletName
+
+            -- both wallets are available
+            rl <- request @[ApiColeWallet] ctx
+                (Link.listWallets @'Cole) Default Empty
+            verify rl
+                [ expectListField 0
+                    (#name . #getApiT . #getWalletName)
+                    (`shouldBe` mnemonicWalletName)
+                , expectListField 1
+                    (#name . #getApiT . #getWalletName)
+                    (`shouldBe` restoredWalletName)
+                ]
+ where
+     restoredWalletName :: Text
+     restoredWalletName = "Wallet from pub key"
+
+-- Helper for HWWallets, getting pubKey from mnemonic sentence
+pubKeyFromMnemonics :: Mnemonic 15 -> Text
+pubKeyFromMnemonics seed =
+    T.decodeUtf8 $ serializeXPub $ publicKey $
+        deriveAccountPrivateKey mempty rootXPrv minBound
+  where
+    rootXPrv = Icarus.generateKeyFromSeed (SomeMnemonic seed) mempty

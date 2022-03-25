@@ -1,0 +1,21 @@
+dev:
+  tls:
+    ca:
+      organization: "The Blockchain Company"
+      commonName: "bcc-wallet Self-Signed Root CA"
+      expiryDays: 3650
+
+    server:
+      organization: "The Blockchain Company"
+      commonName: "bcc-wallet API Server"
+      expiryDays: 365
+      altDNS:
+        - "localhost"
+        - "localhost.localdomain"
+        - "127.0.0.1"
+        - "::1"
+
+    clients:
+      - organization: "The Blockchain Company"
+        commonName: "bcc-wallet Test Suite"
+        expiryDays: 365

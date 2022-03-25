@@ -1,0 +1,841 @@
+{
+    "seed": 5477206274405279323,
+    "samples": [
+        {
+            "estimated_min": {
+                "quantity": 19,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 115,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 83,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 107,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 79,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 179,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 247,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 217,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 77,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 208,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 117,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 72,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 49,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 1,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 247,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 246,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 89,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 134,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 215,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 171,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 130,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 164,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 136,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 61,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 203,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 209,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 245,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 102,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 102,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 58,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 211,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 60,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 34,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 87,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 153,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 113,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 54,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 73,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 141,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 230,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 51,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 60,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 199,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 207,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 67,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 216,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 19,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 144,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 232,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 254,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 116,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 38,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 254,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 215,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 245,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 187,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 125,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 38,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 156,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 73,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 211,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 158,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 39,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 99,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 3,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 223,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 220,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 76,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 195,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 12,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 150,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 83,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 213,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 56,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 178,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 197,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 206,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 47,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 50,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 50,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 93,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 170,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 214,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 106,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 214,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 86,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 14,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 87,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 164,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 127,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 249,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 8,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 191,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 205,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 214,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 159,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 27,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 120,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 69,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 221,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 111,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 219,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 38,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 178,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 146,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 23,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 52,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 201,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 22,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 226,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 155,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 15,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 55,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 233,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 137,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 206,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 104,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 143,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 18,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 161,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 239,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 124,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 11,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 176,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 31,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 164,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 146,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 98,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 180,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 7,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 45,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 61,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 207,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 77,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 238,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 152,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 224,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 166,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 136,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 9,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 147,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 202,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 98,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 56,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 42,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 205,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 204,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 244,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 221,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 8,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 100,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 172,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 170,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 249,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 83,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 71,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 116,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 95,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 134,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 191,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 120,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 106,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 96,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 116,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 56,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 88,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 153,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 86,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 49,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 114,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 153,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 115,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 92,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 102,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 123,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 105,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 133,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 29,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 226,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 13,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 17,
+                "unit": "entropic"
+            }
+        },
+        {
+            "estimated_min": {
+                "quantity": 122,
+                "unit": "entropic"
+            },
+            "deposit": {
+                "quantity": 119,
+                "unit": "entropic"
+            },
+            "minimum_coins": [
+                {
+                    "quantity": 202,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 73,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 192,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 159,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 106,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 94,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 108,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 234,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 255,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 62,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 18,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 77,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 39,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 243,
+                    "unit": "entropic"
+                },
+                {
+                    "quantity": 109,
+                    "unit": "entropic"
+                }
+            ],
+            "estimated_max": {
+                "quantity": 22,
+                "unit": "entropic"
+            }
+        }
+    ]
+}

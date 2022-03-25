@@ -1,0 +1,179 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+
+module Bcc.Wallet.DummyTarget.Primitive.Types
+    ( -- * Dummy values
+      block0
+    , dummyNetworkParameters
+    , dummyGenesisParameters
+    , dummySlottingParameters
+    , dummyTimeInterpreter
+    , genesisHash
+    , mkTxId
+    , mkTx
+
+      -- * Mocks
+    , dummyNetworkLayer
+    ) where
+
+import Prelude
+
+import Bcc.Wallet.Network
+    ( NetworkLayer (..) )
+import Bcc.Wallet.Primitive.Slotting
+    ( TimeInterpreter, hoistTimeInterpreter, mkSingleEraInterpreter )
+import Bcc.Wallet.Primitive.Types
+    ( ActiveSlotCoefficient (..)
+    , Block (..)
+    , BlockHeader (..)
+    , EpochLength (..)
+    , FeePolicy (..)
+    , GenesisParameters (..)
+    , MinimumUTxOValue (..)
+    , NetworkParameters (..)
+    , ProtocolParameters (..)
+    , SlotLength (..)
+    , SlotNo (..)
+    , SlottingParameters (..)
+    , StartTime (..)
+    , TokenBundleMaxSize (..)
+    , TxParameters (..)
+    , emptyEraInfo
+    )
+import Bcc.Wallet.Primitive.Types.Coin
+    ( Coin (..) )
+import Bcc.Wallet.Primitive.Types.Hash
+    ( Hash (..), mockHash )
+import Bcc.Wallet.Primitive.Types.RewardAccount
+    ( RewardAccount (..) )
+import Bcc.Wallet.Primitive.Types.Tx
+    ( Tx (..)
+    , TxIn (..)
+    , TxMetadata (..)
+    , TxOut (..)
+    , TxScriptValidity (..)
+    , TxSize (..)
+    )
+import Data.Coerce
+    ( coerce )
+import Data.Functor.Identity
+    ( Identity (..) )
+import Data.Map.Strict
+    ( Map )
+import Data.Quantity
+    ( Quantity (..) )
+import Data.Time.Clock.POSIX
+    ( posixSecondsToUTCTime )
+
+import qualified Data.ByteString.Char8 as B8
+
+genesisHash :: Hash "Genesis"
+genesisHash = Hash (B8.replicate 32 '0')
+
+block0 :: Block
+block0 = Block
+    { header = BlockHeader
+        { slotNo = SlotNo 0
+        , blockHeight = Quantity 0
+        , headerHash = mockHash $ SlotNo 0
+        , parentHeaderHash = coerce genesisHash
+        }
+    , transactions = []
+    , delegations = []
+    }
+
+dummyGenesisParameters :: GenesisParameters
+dummyGenesisParameters = GenesisParameters
+    { getGenesisBlockHash = genesisHash
+    , getGenesisBlockDate = StartTime $ posixSecondsToUTCTime 0
+    }
+
+dummySlottingParameters :: SlottingParameters
+dummySlottingParameters = SlottingParameters
+    { getSlotLength = SlotLength 1
+    , getEpochLength = EpochLength 21600
+    , getActiveSlotCoefficient = ActiveSlotCoefficient 1
+    , getSecurityParameter = Quantity 2160
+    }
+
+dummyTimeInterpreter :: Monad m => TimeInterpreter m
+dummyTimeInterpreter = hoistTimeInterpreter (pure . runIdentity)
+    $ mkSingleEraInterpreter
+        (getGenesisBlockDate dummyGenesisParameters)
+        dummySlottingParameters
+
+dummyTxParameters :: TxParameters
+dummyTxParameters = TxParameters
+    { getFeePolicy = LinearFee (Quantity 14) (Quantity 42)
+    , getTxMaxSize = Quantity 8192
+    , getTokenBundleMaxSize = TokenBundleMaxSize (TxSize 4000)
+    }
+
+dummyNetworkParameters :: NetworkParameters
+dummyNetworkParameters = NetworkParameters
+    { genesisParameters = dummyGenesisParameters
+    , slottingParameters = dummySlottingParameters
+    , protocolParameters = dummyProtocolParameters
+    }
+
+dummyProtocolParameters :: ProtocolParameters
+dummyProtocolParameters = ProtocolParameters
+    { decentralizationLevel = minBound
+    , txParameters = dummyTxParameters
+    , desiredNumberOfStakePools = 100
+    , minimumUTxOvalue = MinimumUTxOValue $ Coin 0
+    , stakeKeyDeposit = Coin 0
+    , eras = emptyEraInfo
+    , maximumCollateralInputCount = 3
+    , executionUnitPrices = Nothing
+    }
+
+-- | Construct a @Tx@, computing its hash using the dummy @mkTxId@.
+mkTx
+    :: Maybe Coin
+    -> [(TxIn, Coin)]
+    -> [(TxIn, Coin)]
+    -> [TxOut]
+    -> Map RewardAccount Coin
+    -> Maybe TxMetadata
+    -> Maybe TxScriptValidity
+    -> Tx
+mkTx fees ins cins outs wdrls md validity =
+    Tx
+      { txId = (mkTxId ins outs wdrls md)
+      , fee = fees
+      , resolvedCollateral = cins
+      , resolvedInputs = ins
+      , outputs = outs
+      , withdrawals = wdrls
+      , metadata = md
+      , scriptValidity = validity
+      }
+
+-- | txId calculation for testing purposes.
+mkTxId
+    :: [(TxIn, Coin)]
+    -> [TxOut]
+    -> Map RewardAccount Coin
+    -> Maybe TxMetadata -> Hash "Tx"
+mkTxId ins outs wdrls md = mockHash (ins, outs, wdrls, md)
+
+dummyNetworkLayer :: NetworkLayer m a
+dummyNetworkLayer = NetworkLayer
+    { nextBlocks = error "nextBlocks: not implemented"
+    , initCursor = error "initCursor: not implemented"
+    , destroyCursor = error "destroyCursor: not implemented"
+    , cursorSlotNo = error "cursorSlotNo: not implemented"
+    , currentNodeEra = error "currentNodeEra: not implemented"
+    , currentNodeTip = error "currentNodeTip: not implemented"
+    , watchNodeTip = error "watchNodeTip: not implemented"
+    , currentProtocolParameters = error "currentProtocolParameters: not implemented"
+    , currentSlottingParameters = error "currentSlottingParameters: not implemented"
+    , postTx = error "postTx: not implemented"
+    , stakeDistribution = error "stakeDistribution: not implemented"
+    , getCachedRewardAccountBalance = error "getRewardCachedAccountBalance: not implemented"
+    , fetchRewardAccountBalances = error "fetchRewardAccountBalances: not implemented"
+    , timeInterpreter = error "timeInterpreter: not implemented"
+    , syncProgress = error "syncProgress: not implemented"
+    }
