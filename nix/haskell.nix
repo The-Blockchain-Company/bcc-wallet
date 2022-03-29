@@ -219,7 +219,7 @@ let
 
       ({ lib, pkgs, ... }: {
         # Use our forked libsodium from tbco-nix crypto overlay.
-        packages.bcc-crypto-praos.components.library.pkgconfig = lib.mkForce [ [ pkgs.libsodium-vrf ] ];
+        packages.bcc-crypto-optimum.components.library.pkgconfig = lib.mkForce [ [ pkgs.libsodium-vrf ] ];
         packages.bcc-crypto-class.components.library.pkgconfig = lib.mkForce [ [ pkgs.libsodium-vrf ] ];
       })
 

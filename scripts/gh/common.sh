@@ -25,7 +25,7 @@ commit_and_push() {
 }
 
 export GIT_AUTHOR_NAME="William King Noel Bot"
-export GIT_AUTHOR_EMAIL="adrestia@tbco.io"
+export GIT_AUTHOR_EMAIL="adrestia@blockchain-company.io"
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 

@@ -10,7 +10,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- Shardagnostic mini-protocols clients for implementing bcc-wallet. These

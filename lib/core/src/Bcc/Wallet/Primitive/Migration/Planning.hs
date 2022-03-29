@@ -8,7 +8,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 -- |
--- Copyright: © 2021 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- This module contains an algorithm for planning migrations at a high level.

@@ -14,7 +14,7 @@
       identifier = { name = "word-array"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "michael.peyton-jones@tbco.io";
+      maintainer = "michael.peyton-jones@blockchain-company.io";
       author = "Zachary Churchill, Michael Peyton Jones";
       homepage = "https://github.com/zerepoch";
       url = "";

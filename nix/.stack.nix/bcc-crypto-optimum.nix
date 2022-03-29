@@ -11,11 +11,11 @@
     flags = { development = false; external-libsodium-vrf = true; };
     package = {
       specVersion = "2.2";
-      identifier = { name = "bcc-crypto-praos"; version = "2.0.0"; };
+      identifier = { name = "bcc-crypto-optimum"; version = "2.0.0"; };
       license = "Apache-2.0";
-      copyright = "2019-2021 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2019-2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "Crypto primitives from libsodium";
@@ -50,5 +50,5 @@
       rev = "e8a48cf0500b03c744c7fc6f2fedb86e8bdbe055";
       sha256 = "0s3w796y4bgjidg5iwapdq88cq9ipy346gagbip6xlqxdvpp99xj";
       };
-    postUnpack = "sourceRoot+=/bcc-crypto-praos; echo source root reset to \$sourceRoot";
+    postUnpack = "sourceRoot+=/bcc-crypto-optimum; echo source root reset to \$sourceRoot";
     }

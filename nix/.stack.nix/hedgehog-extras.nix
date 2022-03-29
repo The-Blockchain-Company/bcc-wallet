@@ -14,8 +14,8 @@
       identifier = { name = "hedgehog-extras"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "Supplemental library for hedgehog";

@@ -436,7 +436,7 @@ sparseCheckpoints cfg blkH  =
 -- | Captures the configuration for the `sparseCheckpoints` function.
 --
 -- NOTE: large values of 'edgeSize' aren't recommended as they would mean
--- storing many unnecessary checkpoints. In Shardagnostic Praos, there's a
+-- storing many unnecessary checkpoints. In Shardagnostic Optimum, there's a
 -- reasonable probability for small forks of a few blocks so it makes sense to
 -- maintain a small part that is denser near the edge.
 data SparseCheckpointsConfig = SparseCheckpointsConfig

@@ -901,7 +901,7 @@ x-walletAddressPoolGap: &walletAddressPoolGap
     **IMPORTANT DISCLAIMER 2:** There is no way to `import` addresses generated outside (e.g. using bcc-addresses) into the wallet.
     Wallet only discovers transactions on its used and unused addresses that are within its currently seen `address_pool_gap`.
     Transactions on addresses that "belong" to the wallet but happen to be beyond its `address_pool_gap` will not be visible to the wallet.
-    This is a technical limitation of the industry standard [BIP-44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki). See also [CIP-1852](https://github.com/bcc-foundation/CIPs/blob/master/CIP-1852/CIP-1852.md).
+    This is a technical limitation of the industry standard [BIP-44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki). See also [CIP-1852](https://github.com/the-blockchain-company/CIPs/blob/master/CIP-1852/CIP-1852.md).
 
   type: integer
   minimum: 10
@@ -1559,7 +1559,7 @@ x-stakePoolMetadata: &stakePoolMetadata
       type: string
       minLength: 3
       maxLength: 5
-      example: IOHK
+      example: TBCO
     name:
       type: string
       minLength: 1
@@ -5126,7 +5126,7 @@ paths:
         We only support the simplest of scripts: those which require a signature
         from a single key (known as the policy key). The policy key is generated
         from the HD wallet according to to draft CIP-1855
-        (https://github.com/bcc-foundation/CIPs/blob/b2e9d02cb9a71ba9e754a432c78197428abf7e4c/CIP-1855/CIP-1855.md).
+        (https://github.com/the-blockchain-company/CIPs/blob/b2e9d02cb9a71ba9e754a432c78197428abf7e4c/CIP-1855/CIP-1855.md).
 
         Once the policy key is generated, bcc-wallet creates a script from
         that key, which we then mint or burn assets under.
@@ -5135,7 +5135,7 @@ paths:
 
         Please note that due to the fact that there is no physical access to
         policy keys under which assets are minted from the wallet it is
-        currently not possible to add metadata of such assets into [Bcc Token Registry](https://github.com/bcc-foundation/bcc-token-registry).
+        currently not possible to add metadata of such assets into [Bcc Token Registry](https://github.com/the-blockchain-company/bcc-token-registry).
 
       parameters:
         - *parametersWalletId

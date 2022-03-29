@@ -13,9 +13,9 @@
       specVersion = "1.12";
       identifier = { name = "bcc-addresses"; version = "3.6.0"; };
       license = "Apache-2.0";
-      copyright = "2021 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "https://github.com/The-Blockchain-Company/bcc-addresses#readme";
       url = "";
       synopsis = "Library utilities for mnemonic generation and address derivation.";

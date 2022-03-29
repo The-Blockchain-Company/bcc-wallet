@@ -14,8 +14,8 @@
       identifier = { name = "bcc-ledger-core"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "2021 Input Output (Hong Kong) Ltd.";
-      maintainer = "formal.methods@tbco.io";
-      author = "IOHK Formal Methods Team";
+      maintainer = "dev@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "";
       url = "";
       synopsis = "Core components of Bcc ledgers from the Sophie release on.";
@@ -33,7 +33,7 @@
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
           (hsPkgs."bcc-binary" or (errorHandler.buildDepError "bcc-binary"))
           (hsPkgs."bcc-crypto-class" or (errorHandler.buildDepError "bcc-crypto-class"))
-          (hsPkgs."bcc-crypto-praos" or (errorHandler.buildDepError "bcc-crypto-praos"))
+          (hsPkgs."bcc-crypto-optimum" or (errorHandler.buildDepError "bcc-crypto-optimum"))
           (hsPkgs."bcc-crypto-wrapper" or (errorHandler.buildDepError "bcc-crypto-wrapper"))
           (hsPkgs."bcc-ledger-cole" or (errorHandler.buildDepError "bcc-ledger-cole"))
           (hsPkgs."bcc-prelude" or (errorHandler.buildDepError "bcc-prelude"))

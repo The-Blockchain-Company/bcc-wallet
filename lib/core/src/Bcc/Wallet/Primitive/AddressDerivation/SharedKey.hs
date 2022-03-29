@@ -13,7 +13,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 -- |
--- Copyright: © 2018-2021 IOHK
+-- Copyright: © 2021-2022 TBCO
 -- License: Apache-2.0
 --
 -- Definition of 'Shared' Keys.

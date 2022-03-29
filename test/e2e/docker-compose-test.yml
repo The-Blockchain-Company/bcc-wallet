@@ -3,7 +3,7 @@ version: "3.5"
 services:
   bcc-node:
     container_name: bcc-node
-    image: inputoutput/bcc-node:${NODE}
+    image: tbco/bcc-node:${NODE}
     volumes:
       - ~/node-db-nightly-docker:/data
       - node-ipc:/ipc
@@ -13,7 +13,7 @@ services:
 
   bcc-wallet:
     container_name: bcc-wallet
-    image: inputoutput/bcc-wallet:${WALLET}
+    image: tbco/bcc-wallet:${WALLET}
     volumes:
       - wallet-sophie-db:/wallet-db
       - node-ipc:/ipc

@@ -1796,7 +1796,7 @@ hPutErrLn h msg = withSGR h (SetColor Foreground Vivid Red) $ do
 putErrLn :: Text -> IO ()
 putErrLn = hPutErrLn stderr
 
--- | The IOHK logging framework prints out ANSI colour codes with its messages.
+-- | The TBCO logging framework prints out ANSI colour codes with its messages.
 -- On Windows 10 and above it's possible to enable processing of these colour
 -- codes. The 'hSupportsANSIWithoutEmulation' function does this as a side
 -- effect. On older versions of Windows, special treatment is required (see:

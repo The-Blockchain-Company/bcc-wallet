@@ -65,7 +65,7 @@
         bcc-binary = ./bcc-binary.nix;
         bcc-binary-test = ./bcc-binary-test.nix;
         bcc-crypto-class = ./bcc-crypto-class.nix;
-        bcc-crypto-praos = ./bcc-crypto-praos.nix;
+        bcc-crypto-optimum = ./bcc-crypto-optimum.nix;
         bcc-crypto-tests = ./bcc-crypto-tests.nix;
         orphans-deriving-via = ./orphans-deriving-via.nix;
         bcc-slotting = ./bcc-slotting.nix;
@@ -154,7 +154,7 @@
     ({ lib, ... }:
       {
         packages = {
-          "bcc-crypto-praos" = {
+          "bcc-crypto-optimum" = {
             flags = { "external-libsodium-vrf" = lib.mkOverride 900 false; };
             };
           "cryptonite" = {

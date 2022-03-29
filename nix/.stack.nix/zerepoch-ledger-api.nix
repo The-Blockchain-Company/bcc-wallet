@@ -14,7 +14,7 @@
       identifier = { name = "zerepoch-ledger-api"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "michael.peyton-jones@tbco.io";
+      maintainer = "michael.peyton-jones@blockchain-company.io";
       author = "Michael Peyton Jones, Jann Mueller";
       homepage = "";
       url = "";

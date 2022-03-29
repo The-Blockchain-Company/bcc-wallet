@@ -8,7 +8,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- |
--- Copyright: © 2020-2021 IOHK
+-- Copyright: © 2020-2021 TBCO
 -- License: Apache-2.0
 --
 -- Conversion functions which don't have error handling. These are quite

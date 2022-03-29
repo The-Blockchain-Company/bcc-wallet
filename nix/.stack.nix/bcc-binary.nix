@@ -13,9 +13,9 @@
       specVersion = "2.2";
       identifier = { name = "bcc-binary"; version = "1.5.0"; };
       license = "Apache-2.0";
-      copyright = "2019-2021 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2019-2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "Binary serialization for Bcc";

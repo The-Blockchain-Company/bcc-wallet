@@ -13,9 +13,9 @@
       specVersion = "2.2";
       identifier = { name = "bcc-slotting"; version = "0.1.0.0"; };
       license = "Apache-2.0";
-      copyright = "IOHK";
-      maintainer = "formal.methods@tbco.io";
-      author = "IOHK Formal Methods Team";
+      copyright = "TBCO";
+      maintainer = "dev@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "";
       url = "";
       synopsis = "Key slotting types for bcc libraries";

@@ -13,7 +13,7 @@
       specVersion = "1.10";
       identifier = { name = "bcc-crypto"; version = "1.1.0"; };
       license = "MIT";
-      copyright = "2016-2021 IOHK";
+      copyright = "2016-2021 TBCO";
       maintainer = "contact@typed.io";
       author = "Vincent Hanquez";
       homepage = "https://github.com/The-Blockchain-Company/bcc-crypto#readme";

@@ -18,7 +18,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- Network Layer for talking to Haskell re-written nodes.

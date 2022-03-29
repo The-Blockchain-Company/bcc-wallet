@@ -2,7 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 -- |
--- Copyright: © 2018-2021 IOHK
+-- Copyright: © 2021-2022 TBCO
 -- License: Apache-2.0
 --
 -- Utility function for making test suites pass on difficult platforms.

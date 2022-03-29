@@ -14,8 +14,8 @@
       identifier = { name = "sophie-spec-ledger-test"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "formal.methods@tbco.io";
-      author = "IOHK Formal Methods Team";
+      maintainer = "dev@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "";
       url = "";
       synopsis = "";
@@ -79,7 +79,7 @@
             (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
             (hsPkgs."bcc-binary" or (errorHandler.buildDepError "bcc-binary"))
             (hsPkgs."bcc-crypto-class" or (errorHandler.buildDepError "bcc-crypto-class"))
-            (hsPkgs."bcc-crypto-praos" or (errorHandler.buildDepError "bcc-crypto-praos"))
+            (hsPkgs."bcc-crypto-optimum" or (errorHandler.buildDepError "bcc-crypto-optimum"))
             (hsPkgs."bcc-crypto-test" or (errorHandler.buildDepError "bcc-crypto-test"))
             (hsPkgs."bcc-crypto-wrapper" or (errorHandler.buildDepError "bcc-crypto-wrapper"))
             (hsPkgs."bcc-crypto" or (errorHandler.buildDepError "bcc-crypto"))
@@ -121,7 +121,7 @@
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
             (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
             (hsPkgs."bcc-crypto-class" or (errorHandler.buildDepError "bcc-crypto-class"))
-            (hsPkgs."bcc-crypto-praos" or (errorHandler.buildDepError "bcc-crypto-praos"))
+            (hsPkgs."bcc-crypto-optimum" or (errorHandler.buildDepError "bcc-crypto-optimum"))
             (hsPkgs."bcc-ledger-core" or (errorHandler.buildDepError "bcc-ledger-core"))
             (hsPkgs."bcc-prelude" or (errorHandler.buildDepError "bcc-prelude"))
             (hsPkgs."bcc-slotting" or (errorHandler.buildDepError "bcc-slotting"))

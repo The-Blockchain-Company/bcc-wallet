@@ -14,7 +14,7 @@
       identifier = { name = "zerepoch-use-cases"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "jann.mueller@tbco.io";
+      maintainer = "jann.mueller@blockchain-company.io";
       author = "Manuel M T Chakravarty, Jann Müller";
       homepage = "";
       url = "";

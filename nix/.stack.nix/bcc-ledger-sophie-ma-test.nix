@@ -17,8 +17,8 @@
         };
       license = "Apache-2.0";
       copyright = "2020 Input Output (Hong Kong) Ltd.";
-      maintainer = "formal.methods@tbco.io";
-      author = "IOHK Formal Methods Team";
+      maintainer = "dev@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "";
       url = "";
       synopsis = "Sophie ledger with multiasset and time lock support.";

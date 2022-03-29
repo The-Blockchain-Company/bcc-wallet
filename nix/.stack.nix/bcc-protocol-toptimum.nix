@@ -11,15 +11,15 @@
     flags = {};
     package = {
       specVersion = "2.4";
-      identifier = { name = "bcc-protocol-tpraos"; version = "0.1.0.0"; };
+      identifier = { name = "bcc-protocol-toptimum"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "2021 Input Output (Hong Kong) Ltd.";
-      maintainer = "formal.methods@tbco.io";
-      author = "IOHK Formal Methods Team";
+      maintainer = "dev@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "";
       url = "";
       synopsis = "";
-      description = "Bcc Protocol: Transitional Praos";
+      description = "Bcc Protocol: Transitional Optimum";
       buildType = "Simple";
       isLocal = true;
       };
@@ -55,5 +55,5 @@
       rev = "ec51e4fb1b17461ab612cf427b79f1742942e8cb";
       sha256 = "05bwy7x1asyfshqsfsyv2c70qwrxp4680xlvhwdm1hz9bi0lpq41";
       };
-    postUnpack = "sourceRoot+=/bcc-protocol-tpraos; echo source root reset to \$sourceRoot";
+    postUnpack = "sourceRoot+=/bcc-protocol-toptimum; echo source root reset to \$sourceRoot";
     }

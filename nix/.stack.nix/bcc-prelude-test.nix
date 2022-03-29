@@ -13,9 +13,9 @@
       specVersion = "2.2";
       identifier = { name = "bcc-prelude-test"; version = "0.1.0.0"; };
       license = "MIT";
-      copyright = "2018-2021 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2021-2022 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "Utility types and functions for testing Bcc";

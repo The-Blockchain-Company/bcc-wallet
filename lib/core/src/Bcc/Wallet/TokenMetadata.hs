@@ -23,7 +23,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
--- Copyright: © 2018-2021 IOHK
+-- Copyright: © 2021-2022 TBCO
 -- License: Apache-2.0
 --
 -- A client used to query asset metadata from the Bcc metadata-server.

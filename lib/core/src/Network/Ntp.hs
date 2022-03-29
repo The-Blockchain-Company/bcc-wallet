@@ -4,7 +4,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- This module provides the Ntp client related settings, types

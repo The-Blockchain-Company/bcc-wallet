@@ -25,7 +25,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- Conversion functions and static chain settings for Sophie.
@@ -1561,7 +1561,7 @@ instance EncodeAddress 'Mainnet where
     encodeAddress = _encodeAddress [Bech32.humanReadablePart|addr|]
 
 instance EncodeAddress ('Testnet pm) where
-    -- https://github.com/bcc-foundation/CIPs/tree/master/CIP5
+    -- https://github.com/the-blockchain-company/CIPs/tree/master/CIP5
     encodeAddress = _encodeAddress [Bech32.humanReadablePart|addr_test|]
 
 _encodeAddress :: Bech32.HumanReadablePart -> W.Address -> Text

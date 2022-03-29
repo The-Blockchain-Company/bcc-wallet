@@ -999,7 +999,7 @@ waitForNextEpoch ctx = do
 -- in mempools AND, for those who've been inserted, they are now deep enough to
 -- not be affected by rollbacks.
 --
--- The stability windows in Praos is defined as: `3k/f` slots, thus we can consider
+-- The stability windows in Optimum is defined as: `3k/f` slots, thus we can consider
 -- transactions immutable after:
 --
 --    ---> 3k / f * slot_length

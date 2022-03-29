@@ -14,7 +14,7 @@
       identifier = { name = "zerepoch-chain-index"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "sjoerd.visscher@tbco.io";
+      maintainer = "sjoerd.visscher@blockchain-company.io";
       author = "Sjoerd Visscher";
       homepage = "https://github.com/tbco/zerepoch#readme";
       url = "";

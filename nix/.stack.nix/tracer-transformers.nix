@@ -13,8 +13,8 @@
       specVersion = "1.10";
       identifier = { name = "tracer-transformers"; version = "0.1.0.1"; };
       license = "Apache-2.0";
-      copyright = "2019 IOHK";
-      maintainer = "operations@tbco.io";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
       author = "Neil Davies, Alexander Diemand, Andreas Triantafyllos";
       homepage = "";
       url = "";

@@ -13,9 +13,9 @@
       specVersion = "2.2";
       identifier = { name = "tbco-nix-utils"; version = "0.1.0.0"; };
       license = "Apache-2.0";
-      copyright = "2019 IOHK";
-      maintainer = "devops@tbco.io";
-      author = "IOHK Devops";
+      copyright = "2021 TBCO";
+      maintainer = "devops@blockchain-company.io";
+      author = "TBCO Devops";
       homepage = "";
       url = "";
       synopsis = "";

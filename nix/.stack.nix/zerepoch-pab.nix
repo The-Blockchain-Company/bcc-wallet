@@ -14,7 +14,7 @@
       identifier = { name = "zerepoch-pab"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "jann.mueller@tbco.io";
+      maintainer = "jann.mueller@blockchain-company.io";
       author = "Jann Müller";
       homepage = "https://github.com/tbco/zerepoch#readme";
       url = "";

@@ -10,7 +10,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
--- Copyright: © 2018-2021 IOHK
+-- Copyright: © 2021-2022 TBCO
 -- License: Apache-2.0
 --
 -- A mock metadata-server for testing, metadata requests. Created using the

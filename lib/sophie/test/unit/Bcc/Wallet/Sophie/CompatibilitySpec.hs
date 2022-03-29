@@ -916,7 +916,7 @@ bech32 = Bech32.encodeLenient hrp . Bech32.dataPartFromBytes
   where hrp = [humanReadablePart|addr|]
 
 -- Expected bech32 encoding for testnets
--- https://github.com/bcc-foundation/CIPs/tree/master/CIP5
+-- https://github.com/the-blockchain-company/CIPs/tree/master/CIP5
 bech32testnet :: ByteString -> Text
 bech32testnet = Bech32.encodeLenient hrp . Bech32.dataPartFromBytes
   where hrp = [humanReadablePart|addr_test|]

@@ -14,7 +14,7 @@
       identifier = { name = "freer-extras"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "tobias.pflug@tbco.io";
+      maintainer = "tobias.pflug@blockchain-company.io";
       author = "Tobias Pflug";
       homepage = "";
       url = "";

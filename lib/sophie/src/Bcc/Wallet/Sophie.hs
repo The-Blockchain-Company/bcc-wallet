@@ -13,7 +13,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- This module provides the main wallet server function for Sophie.

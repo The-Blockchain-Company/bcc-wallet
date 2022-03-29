@@ -3,9 +3,9 @@ version:             2021.9.29
 synopsis:            Wallet backend protocol-specific bits implemented using Sophie nodes
 description:         Please see README.md
 homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
-author:              IOHK Engineering Team
-maintainer:          operations@tbco.io
-copyright:           2020 IOHK
+author:              The Blockchain Company.io
+maintainer:          operations@blockchain-company.io
+copyright:           2021 TBCO
 license:             Apache-2.0
 category:            Web
 build-type:          Simple

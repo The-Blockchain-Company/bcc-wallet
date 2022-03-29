@@ -34,7 +34,7 @@ flags:
 
   # Bundle VRF crypto in libsodium and do not rely on an external fork to have it.
   # This still requires the host system to have the 'standard' libsodium installed.
-  bcc-crypto-praos:
+  bcc-crypto-optimum:
     external-libsodium-vrf: false
 
   # Using RDRAND instead of /dev/urandom as an entropy source for key
@@ -137,7 +137,7 @@ extra-deps:
   - binary
   - binary/test
   - bcc-crypto-class
-  - bcc-crypto-praos
+  - bcc-crypto-optimum
   - bcc-crypto-tests
   - orphans-deriving-via
   - slotting

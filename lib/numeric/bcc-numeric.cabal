@@ -2,8 +2,8 @@ name:                bcc-numeric
 version:             2020.12.8
 synopsis:            Types and functions for performing numerical calculations.
 homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
-author:              IOHK Engineering Team
-maintainer:          operations@tbco.io
+author:              The Blockchain Company.io
+maintainer:          operations@blockchain-company.io
 copyright:           2021-2022 TBCO
 license:             Apache-2.0
 category:            Math

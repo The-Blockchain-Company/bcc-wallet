@@ -16,8 +16,8 @@
         version = "0.1.0.0";
         };
       license = "Apache-2.0";
-      copyright = "2020 IOHK";
-      maintainer = "operations@tbco.io";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
       author = "Alexander Diemand";
       homepage = "https://github.com/The-Blockchain-Company/tbco-monitoring-framework";
       url = "";

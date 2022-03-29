@@ -12,7 +12,7 @@
 {-# LANGUAGE TypeApplications #-}
 
 -- |
--- Copyright: © 2021 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- Provides an algorithm for producing a balanced coin selection with change,

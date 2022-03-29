@@ -14,8 +14,8 @@
       identifier = { name = "bcc-api"; version = "1.30.1"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "";

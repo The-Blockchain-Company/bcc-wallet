@@ -2,8 +2,8 @@ name:                text-class
 version:             2021.9.29
 synopsis:            Extra helpers to convert data-types to and from Text
 homepage:            https://github.com/The-Blockchain-Company/bcc-wallet
-author:              IOHK Engineering Team
-maintainer:          operations@tbco.io
+author:              The Blockchain Company.io
+maintainer:          operations@blockchain-company.io
 copyright:           2021-2022 TBCO
 license:             Apache-2.0
 category:            Web

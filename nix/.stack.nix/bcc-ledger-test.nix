@@ -13,9 +13,9 @@
       specVersion = "1.10";
       identifier = { name = "bcc-ledger-test"; version = "1.3.0"; };
       license = "Apache-2.0";
-      copyright = "2018 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "Test helpers from bcc-ledger exposed to other packages";

@@ -17,7 +17,7 @@
 {-# LANGUAGE ViewPatterns #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- This module provides tools to collect a consistent view of stake pool data,

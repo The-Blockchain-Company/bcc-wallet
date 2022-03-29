@@ -913,7 +913,7 @@ data SlottingParameters = SlottingParameters
     , getEpochLength :: EpochLength
         -- ^ Number of slots in a single epoch.
     , getActiveSlotCoefficient :: ActiveSlotCoefficient
-        -- ^ a.k.a 'f', in Genesis/Praos, corresponds to the % of active slots
+        -- ^ a.k.a 'f', in Genesis/Optimum, corresponds to the % of active slots
         -- (i.e. slots for which someone can be elected as leader).
         --
         -- Determines the value of 'stabilityWindowSophie'.

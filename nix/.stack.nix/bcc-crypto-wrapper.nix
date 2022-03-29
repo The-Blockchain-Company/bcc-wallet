@@ -13,9 +13,9 @@
       specVersion = "2.2";
       identifier = { name = "bcc-crypto-wrapper"; version = "1.3.0"; };
       license = "Apache-2.0";
-      copyright = "2019 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "Cryptographic primitives used in the Bcc project";

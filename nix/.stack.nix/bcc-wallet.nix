@@ -13,9 +13,9 @@
       specVersion = "1.10";
       identifier = { name = "bcc-wallet"; version = "2021.9.29"; };
       license = "Apache-2.0";
-      copyright = "2020 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK Engineering Team";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "https://github.com/The-Blockchain-Company/bcc-wallet";
       url = "";
       synopsis = "Wallet backend protocol-specific bits implemented using Sophie nodes";

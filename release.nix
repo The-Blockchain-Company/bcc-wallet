@@ -52,7 +52,7 @@
 # Dependencies overrides
 , sourcesOverride ? {}
 
-# Import pkgs, including IOHK common nix lib
+# Import pkgs, including TBCO common nix lib
 , pkgs ? import ./nix { inherit sourcesOverride; }
 
 # GitHub PR number (as a string), provided as a Hydra input
@@ -216,7 +216,7 @@ let
   });
 
   ############################################################################
-  # This aggregate job is what IOHK Hydra uses to update the CI status
+  # This aggregate job is what TBCO Hydra uses to update the CI status
   # in GitHub.
 
   required = releaseLib.linux.mkRequiredJob (

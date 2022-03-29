@@ -14,7 +14,7 @@
       identifier = { name = "network-mux"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "2019 Input Output (Hong Kong) Ltd.";
-      maintainer = "duncan@well-typed.com, marcin.szamotulski@tbco.io, marc.fontaine@tbco.io, karl.knutsson@tbco.io, alex@well-typed.com, neil.davies@pnsol.com";
+      maintainer = "duncan@well-typed.com, marcin.szamotulski@blockchain-company.io, marc.fontaine@blockchain-company.io, karl.knutsson@blockchain-company.io, alex@well-typed.com, neil.davies@pnsol.com";
       author = "Duncan Coutts, Marc Fontaine, Karl Knutsson, Marcin Szamotulski, Alexander Vieth, Neil Davies";
       homepage = "";
       url = "";

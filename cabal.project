@@ -21,7 +21,7 @@
 -- nix-shell environment.
 --
 -- All dependencies, including Haskell package dependencies, have been
--- built on Hydra and are transparently downloaded from the IOHK
+-- built on Hydra and are transparently downloaded from the TBCO
 -- cache.
 --
 -- The Haskell package set in shell.nix is automatically generated
@@ -80,7 +80,7 @@ source-repository-package
             binary
             binary/test
             bcc-crypto-class
-            bcc-crypto-praos
+            bcc-crypto-optimum
             bcc-crypto-tests
             orphans-deriving-via
             measures

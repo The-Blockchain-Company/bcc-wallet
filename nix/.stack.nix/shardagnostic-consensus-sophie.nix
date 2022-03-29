@@ -17,8 +17,8 @@
         };
       license = "Apache-2.0";
       copyright = "2019 Input Output (Hong Kong) Ltd.";
-      maintainer = "operations@tbco.io";
-      author = "IOHK Engineering Team";
+      maintainer = "operations@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "";
       url = "";
       synopsis = "Sophie ledger integration in the Shardagnostic consensus layer";

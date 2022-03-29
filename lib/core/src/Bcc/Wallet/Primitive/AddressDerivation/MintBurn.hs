@@ -1,12 +1,12 @@
 {-# LANGUAGE DataKinds #-}
 
 -- |
--- Copyright: © 2018-2021 IOHK
+-- Copyright: © 2021-2022 TBCO
 -- License: Apache-2.0
 --
 -- Derivation of policy keys which are used to create scripts for the purposes
 -- of minting and burning. Derived according to CIP-1855
--- (https://github.com/bcc-foundation/CIPs/blob/b2e9d02cb9a71ba9e754a432c78197428abf7e4c/CIP-1855/CIP-1855.md).
+-- (https://github.com/the-blockchain-company/CIPs/blob/b2e9d02cb9a71ba9e754a432c78197428abf7e4c/CIP-1855/CIP-1855.md).
 --
 -- The policy keys are derived from the following path:
 --

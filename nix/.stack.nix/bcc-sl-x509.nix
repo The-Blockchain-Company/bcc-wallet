@@ -13,9 +13,9 @@
       specVersion = "1.10";
       identifier = { name = "bcc-sl-x509"; version = "3.0.0"; };
       license = "MIT";
-      copyright = "2018 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK Engineering Team";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "https://github.com/The-Blockchain-Company/bcc-sl/x509/README.md";
       url = "";
       synopsis = "Tool-suite for generating x509 certificates specialized for RSA with SHA-256";

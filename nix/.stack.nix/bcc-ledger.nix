@@ -13,9 +13,9 @@
       specVersion = "1.10";
       identifier = { name = "bcc-ledger"; version = "0.1.0.0"; };
       license = "Apache-2.0";
-      copyright = "2018 IOHK";
-      maintainer = "operations@tbco.io";
-      author = "IOHK";
+      copyright = "2021 TBCO";
+      maintainer = "operations@blockchain-company.io";
+      author = "TBCO";
       homepage = "";
       url = "";
       synopsis = "The blockchain layer of Bcc";

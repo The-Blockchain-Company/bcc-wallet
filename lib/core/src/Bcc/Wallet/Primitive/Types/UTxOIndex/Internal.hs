@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedLabels #-}
 
 -- |
--- Copyright: © 2018-2021 IOHK
+-- Copyright: © 2021-2022 TBCO
 -- License: Apache-2.0
 --
 -- Provides internal functions for the 'UTxOIndex' type, which indexes a UTxO

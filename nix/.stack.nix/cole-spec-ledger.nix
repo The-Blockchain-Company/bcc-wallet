@@ -14,8 +14,8 @@
       identifier = { name = "cole-spec-ledger"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
-      maintainer = "formal.methods@tbco.io";
-      author = "IOHK Formal Methods Team";
+      maintainer = "dev@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "https://github.com/The-Blockchain-Company/bcc-legder-specs";
       url = "";
       synopsis = "Executable specification of Bcc ledger";

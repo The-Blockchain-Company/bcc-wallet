@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeApplications #-}
 
 -- |
--- Copyright: © 2020 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- Exposes a wallet-friendly interface to types and functions exported by the

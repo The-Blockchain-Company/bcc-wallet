@@ -1,5 +1,5 @@
 -- |
--- Copyright: © 2021 IOHK
+-- Copyright: © 2021 TBCO
 -- License: Apache-2.0
 --
 -- Temporary compatibility functions for the ghc-8.10.4 update.

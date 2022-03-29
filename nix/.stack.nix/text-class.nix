@@ -14,8 +14,8 @@
       identifier = { name = "text-class"; version = "2021.9.29"; };
       license = "Apache-2.0";
       copyright = "2021-2022 TBCO";
-      maintainer = "operations@tbco.io";
-      author = "IOHK Engineering Team";
+      maintainer = "operations@blockchain-company.io";
+      author = "The Blockchain Company.io";
       homepage = "https://github.com/The-Blockchain-Company/bcc-wallet";
       url = "";
       synopsis = "Extra helpers to convert data-types to and from Text";
