@@ -493,7 +493,7 @@ class HardDerivation key => SoftDerivation (key :: Depth -> Type -> Type) where
         -> key 'AddressK XPub
 
 -- | Derivation of a reward account, as a type-class because different between
--- key types (in particular, Jörmungandr vs Sophie).
+-- key types (in particular, Quibitous vs Sophie).
 class ToRewardAccount k where
     toRewardAccount :: k 'AddressK XPub -> RewardAccount
     someRewardAccount :: SomeMnemonic -> (XPrv, RewardAccount, NonEmpty DerivationIndex)

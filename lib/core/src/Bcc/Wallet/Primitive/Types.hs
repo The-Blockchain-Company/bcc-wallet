@@ -640,7 +640,7 @@ instance ToJSON StakePoolTicker where
     toJSON = toJSON . toText
 
 -- | Identifies a stake pool.
--- For Jörmungandr a 'PoolId' is the blake2b-256 hash of the stake pool
+-- For Quibitous a 'PoolId' is the blake2b-256 hash of the stake pool
 -- registration certificate.
 newtype PoolId = PoolId { getPoolId :: ByteString }
     deriving (Generic, Eq, Show, Ord)

@@ -21,7 +21,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 -- Orphan instances for {Encode,Decode}Address until we get rid of the
--- Jörmungandr dual support.
+-- Quibitous dual support.
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
@@ -1202,7 +1202,7 @@ fromPoolMetadata meta =
 
 -- | Convert a stake credentials to a 'RewardAccount' type.
 --
--- Unlike with Jörmungandr, the reward account payload doesn't represent a
+-- Unlike with Quibitous, the reward account payload doesn't represent a
 -- public key but a HASH of a public key.
 --
 fromStakeCredential :: SL.Credential 'SL.Staking crypto -> W.RewardAccount

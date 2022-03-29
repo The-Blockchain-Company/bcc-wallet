@@ -454,7 +454,7 @@ mkRndAddresses numAddrs i =
 -- - ~45 inputs
 -- - ~155 outputs
 --
--- In Quibitous with Jörmungandr, we have a soft max size of 8Kb (64Kb hard).
+-- In Quibitous with Quibitous, we have a soft max size of 8Kb (64Kb hard).
 --
 -- A transaction size is roughly:
 --

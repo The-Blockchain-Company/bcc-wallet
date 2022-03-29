@@ -199,7 +199,7 @@ import qualified Data.Text.Lazy.Builder as Builder
 data Tx = Tx
     { txId
         :: Hash "Tx"
-        -- ^ Jörmungandr computes transaction id by hashing the full content of
+        -- ^ Quibitous computes transaction id by hashing the full content of
         -- the transaction, which includes witnesses. Therefore, we need either
         -- to keep track of the witnesses to be able to re-compute the tx id
         -- every time, or, simply keep track of the id itself.
