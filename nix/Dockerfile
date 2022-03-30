@@ -31,11 +31,11 @@ RUN nix-channel --update
 
 RUN nix-env -i git gnutar
 
-# Set --build-arg USE_IOHK_CACHE=t if you lack the time and/or disk
+# Set --build-arg USE_TBCO_CACHE=t if you lack the time and/or disk
 # space to build ghc and everything else. These lines will enable the
 # TBCO binary cache of nix builds from https://hydra.tbco.io.
-ARG USE_IOHK_CACHE=
-RUN test -n "${USE_IOHK_CACHE}" && ( echo "Note: using TBCO nix cache" > /dev/stderr ; echo 'substituters = https://hydra.tbco.io https://cache.nixos.org\ntrusted-public-keys = hydra.tbco.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=' >> /etc/nix/nix.conf ) || echo "Note: Not using TBCO nix cache"
+ARG USE_TBCO_CACHE=
+RUN test -n "${USE_TBCO_CACHE}" && ( echo "Note: using TBCO nix cache" > /dev/stderr ; echo 'substituters = https://hydra.tbco.io https://cache.nixos.org\ntrusted-public-keys = hydra.tbco.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=' >> /etc/nix/nix.conf ) || echo "Note: Not using TBCO nix cache"
 
 ############################################################################
 # Warm up cache

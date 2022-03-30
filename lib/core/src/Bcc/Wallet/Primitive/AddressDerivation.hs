@@ -22,7 +22,7 @@
 -- Primitives for performing address derivation for some given schemes. This is
 -- where most of the crypto happens in the wallet and, it is quite important to
 -- ensure that the implementations match with other Bcc wallets
--- (like bcc-sl, Yoroi/Icarus, or bcc-cli)
+-- (like bcc-sl, Quantaverse/Icarus, or bcc-cli)
 --
 -- The actual implementations are in the following modules:
 --
