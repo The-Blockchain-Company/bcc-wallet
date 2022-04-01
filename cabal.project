@@ -118,6 +118,7 @@ source-repository-package
             cole/ledger/impl
             cole/ledger/impl/test
             bcc-ledger-core
+            bcc-protocol-toptimum
             semantics/executable-spec
             semantics/small-steps-test
             sophie/chain-and-ledger/dependencies/non-integer
