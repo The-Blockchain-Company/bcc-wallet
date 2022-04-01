@@ -86,7 +86,7 @@ import Shardagnostic.Consensus.Cole.Ledger
     ( ColeBlock (..), ColeHash (..) )
 import Shardagnostic.Consensus.Cole.Ledger.Config
     ( CodecConfig (..) )
-import Shardagnostic.Consensus.HardFork.History.Sumjen
+import Shardagnostic.Consensus.HardFork.History.Summary
     ( Bound (..) )
 import Shardagnostic.Network.Block
     ( BlockNo (..), ChainHash, SlotNo (..) )
