@@ -129,7 +129,7 @@ source-repository-package
 source-repository-package
     type: git
     location: https://github.com/The-Blockchain-Company/bcc-node
-    tag: 26add20aeaa14d8c6dd3425a2f879a8816076788
+    tag: e178cf9a3f3dc7341cb6cd056bb71de3effe0ecc
     subdir: bcc-api
             bcc-cli
             bcc-config

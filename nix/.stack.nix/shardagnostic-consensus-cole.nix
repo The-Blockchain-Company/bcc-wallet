@@ -13,7 +13,7 @@
       specVersion = "1.10";
       identifier = { name = "shardagnostic-consensus-cole"; version = "0.1.0.0"; };
       license = "Apache-2.0";
-      copyright = "2019 Input Output (Hong Kong) Ltd.";
+      copyright = "2022 The Blockchain Company.io LLC";
       maintainer = "operations@blockchain-company.io";
       author = "The Blockchain Company.io";
       homepage = "";

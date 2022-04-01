@@ -13,7 +13,7 @@
       specVersion = "1.10";
       identifier = { name = "io-classes"; version = "0.2.0.0"; };
       license = "Apache-2.0";
-      copyright = "2019 Input Output (Hong Kong) Ltd.";
+      copyright = "2022 The Blockchain Company.io LLC";
       maintainer = "";
       author = "Alexander Vieth, Marcin Szamotulski, Duncan Coutts";
       homepage = "";
