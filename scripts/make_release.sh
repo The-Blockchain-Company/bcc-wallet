@@ -92,7 +92,7 @@ sed -i "s|version: .*|version: $GIT_TAG|" specifications/api/swagger.yaml
 echo ""
 
 echo "Updating docker-compose.yml with $BCC_NODE_TAG bcc-node tag"
-sed -i "s|inputoutput/bcc-node:.*|inputoutput/bcc-node:$BCC_NODE_TAG|" docker-compose.yml
+sed -i "s|tbco/bcc-node:.*|tbco/bcc-node:$BCC_NODE_TAG|" docker-compose.yml
 echo ""
 
 echo "Looking for remaining references to old version $OLD_CABAL_VERSION:"

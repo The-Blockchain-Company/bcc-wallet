@@ -55,7 +55,7 @@ curl http://localhost:8090/v2/network/information
 or to be accessed via CLI, e.g.:
 
 ```
-docker run --network host --rm inputoutput/bcc-wallet network information
+docker run --network host --rm tbco/bcc-wallet network information
 ```
 
 See also [Wiki - Docker](https://github.com/The-Blockchain-Company/bcc-wallet/wiki/Docker) for more information about using docker.

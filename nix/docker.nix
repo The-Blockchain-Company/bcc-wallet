@@ -20,7 +20,7 @@
 , glibcLocales ? null
 
 # Used to generate the docker image names
-, repoName ? "inputoutput/bcc-wallet"
+, repoName ? "tbco/bcc-wallet"
 }:
 
 
